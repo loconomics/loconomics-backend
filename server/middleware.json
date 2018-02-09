@@ -28,6 +28,13 @@
     "helmet#noSniff": {},
     "helmet#noCache": {
       "enabled": false
+    },
+    "./middleware/i18n": {
+      "params": {
+        "locales": [
+          "en"
+        ]
+      }
     }
   },
   "session": {},
