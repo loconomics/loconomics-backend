@@ -16,6 +16,7 @@ services:
       dockerfile: Dockerfile.dev
     environment:
       DATABASE_URL: mssql://sa:Password!!11@db/master
+      LOCONOMICS_BACKEND_URL: https://dev.loconomics.com
     depends_on:
       - db
     ports:
