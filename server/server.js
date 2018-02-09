@@ -1,6 +1,9 @@
 import loopback from "loopback";
+import logger from "morgan"
 
 const app = loopback()
+
+app.use(logger("combined"))
 
 app.start = () => {
   // start the web server
