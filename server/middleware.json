@@ -53,8 +53,7 @@
     }
   },
   "final": {
-    "./middleware/proxy": {
-    },
+    "./middleware/proxy": {},
     "loopback#urlNotFound": {}
   },
   "final:after": {
