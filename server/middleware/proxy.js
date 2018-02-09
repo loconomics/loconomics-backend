@@ -1,14 +1,24 @@
-import url from "url"
+import querystring from "querystring"
 
 import httpProxy from "http-proxy"
 
-const proxy = httpProxy.createProxyServer()
+const proxy = httpProxy.createProxyServer({
+  changeOrigin: true
+})
+
+// Fix for https://github.com/nodejitsu/node-http-proxy/issues/180
+proxy.on("proxyReq", (proxyReq, req) => {
+  if(req.body) {
+    const bodyData = querystring.stringify(req.body)
+    proxyReq.setHeader("Content-Length", Buffer.byteLength(bodyData))
+    // stream the content
+    proxyReq.write(bodyData);
+  }
+})
 
 export default () => {
-  const backend = url.parse(process.env.LOCONOMICS_BACKEND_URL || "https://www.loconomics.com")
+  const backend = process.env.LOCONOMICS_BACKEND_URL || "https://www.loconomics.com"
   return (req, res, next) => {
-    req.headers.host = backend.host
-    console.log("Backend", backend)
-    proxy.web(req, res, {target: backend.href})
+    proxy.web(req, res, {target: backend})
   }
 }
