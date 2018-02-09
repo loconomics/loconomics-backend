@@ -1,12 +1,5 @@
 {
   "db": {
-    "host": "",
-    "port": 0,
-    "url": "mssql://sa:Password!!11@db/master",
-    "database": "",
-    "password": "",
-    "name": "db",
-    "user": "",
     "connector": "mssql"
   }
 }
