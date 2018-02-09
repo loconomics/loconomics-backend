@@ -4,6 +4,8 @@ Currently this is just a proxy. Incoming requests are passed directly to dev.loc
 
 ## Setup
 
+### Development
+
 FOr the moment, [Docker](https://www.docker.com) is the only supported development environment. Nothing about the backend is Docker-specific, so avoiding Docker is entirely possible but beyond the scope of this documentation. To set up a development environment:
 
 1. [Set up the Loconomics frontend](https://github.com/loconomics/loconomics/blob/master/docs/App%20Quick%20Start%20Guide.md).
@@ -14,4 +16,13 @@ FOr the moment, [Docker](https://www.docker.com) is the only supported developme
 6. Visit http://localhost:8811 and, from a browser console, run `localStorage.siteUrl = 'http://localhost:3000'`.
 7. You may need to reload the page.
 
-The backend development environment is now running. Note that, in its current form, the backend requires that dev.loconomics.com be operational. It also forwards all data via HTTP.
+The backend development environment is now running. Note that, in its current form, the backend requires that dev.loconomics.com be operational during development.
+
+### Production
+
+*_This is not currently intended for production use!*_
+
+But, as a start at collecting notes, here we go. The following environment variables are currently used:
+
+ * `DATABASE_URL`: URL to the MSSQL database in the form `mssql://<username>:<password>@<host[:port]>/<database>`
+ * `LOCONOMICS_BACKEND_URL`: While we're proxying, set to the URL of the .net Loconomics backend. Defaults to `https://www.loconomics.com`.
