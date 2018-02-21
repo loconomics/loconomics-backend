@@ -4,4 +4,4 @@ services:
   - docker
 
 script:
-- docker build loconomics/backend
+- docker build -t loconomics/backend .
