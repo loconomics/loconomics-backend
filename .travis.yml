@@ -1,7 +1,24 @@
 sudo: required
 
 services:
-  - docker
+- docker
+
+env:
+  matrix:
+  - DOCKER_USERNAME=loconomics
+  - secure: SllTy8W3jw/BHotD3mOwvAGL7shjzT7IDsuLi+ry6j/ge/fy1flmXH2j2dyebSzQokuHJbCeWTke0vItuvIKtR3d424TpKrWffdNAEbdzUGyKTF+sdjna+CYBgUUUW9Ot5mroX8YRx7ah/IMdOA6GfMLqQ+9m0Tkp8H+klj5KMJYfJhCyt6qXJ47QlPmFFIj1KCAgXAgAljpaexVQASETYQqMLzD/+n/wuv+grdl+QQ8VUOTWPecKvSeg5g508+/EUl5pbYgxjxt3vdiO8aeaP5XZN3m7gTJ0PcUTlOgIUXT8qvi8CrGSjr9Cak1Kwo/JOLY3fgMCmXxoeKzIUFu+CVPBKNNGbU6ntO/LmpbHTUMlKmgQqGR5rk/3P4QokQI8uOID9QFRf6VxsqzufsjDp7WzlEzXISGHY1AKdL2si/mXkv3ZrTwneed+TQrJeVwzI0Y5iXH9dgDccz0TG1udmy8ZanK3FqC3VZ/xjpf/gyZ0UU0om5tQ5VpMr32WW1xlejxTvbae07s3Z624JWfWGcmD7Ehh0GMVfuf0OuobuQt39yn4tXbNuBkGSAblMVzrDJCg6Bf0s1IuCXf/Y1k/X0DlQPvp7ouusJCh9iZYaGLadm+A01a8seRcFh2j5zBbWTw0flSijlHxDXEx1Y5X/ITtpqn31lIuW5725mJyfo=
+
+before_install:
+- docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
 
 script:
 - docker build -t loconomics/backend .
+
+after_success:
+- if [ "$TRAVIS_BRANCH" == "master" ]; then 
+  docker tag loconomics/backend loconomics/backend:latest;
+  docker push loconomics/backend:latest;
+  elif [ "$TRAVIS_BRANCH" == "production" ]; then
+  docker tag loconomics/backend loconomics/backend:production;
+  docker push loconomics/backend:production;
+  fi
