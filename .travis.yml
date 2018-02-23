@@ -15,8 +15,8 @@ script:
 - docker build -t loconomics/backend .
 
 after_success:
-- docker pull microsoft/azure-cli
-  if [ "$TRAVIS_BRANCH" == "master" ]; then 
+- docker pull microsoft/azure-cli;
+  if [ "$TRAVIS_BRANCH" == "master" ]; then
   docker tag loconomics/backend loconomics/backend:latest;
   docker push loconomics/backend:latest;
   elif [ "$TRAVIS_BRANCH" == "production" ]; then
