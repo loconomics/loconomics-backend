@@ -27,6 +27,7 @@
     "strong-error-handler": "^2.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "eslint": "^4.17.0",
     "eslint-config-loopback": "^10.0.0",
     "nodemon": "^1.14.12",
