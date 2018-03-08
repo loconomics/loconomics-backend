@@ -29,6 +29,7 @@
     "helmet#noCache": {
       "enabled": false
     },
+    "./middleware/versioner": {},
     "./middleware/i18n": {
       "params": {
         "locales": [
