@@ -13,11 +13,11 @@
       "./mixins"
     ]
   },
-  "Member": {
+  "User": {
     "dataSource": "db",
     "public": false
   },
-  "Token": {
+  "AccessToken": {
     "dataSource": "db",
     "public": false
   },
@@ -39,5 +39,13 @@
   "test": {
     "dataSource": null,
     "public": true
+  },
+  "Member": {
+    "dataSource": "db",
+    "public": false
+  },
+  "Token": {
+    "dataSource": "db",
+    "public": false
   }
 }

@@ -5,6 +5,8 @@ const app = loopback()
 
 app.use(logger("combined"))
 
+app.use(loopback.token({model: app.models.Token}))
+
 app.start = () => {
   // start the web server
   return app.listen(() => {

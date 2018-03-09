@@ -39,7 +39,13 @@
     }
   },
   "session": {},
-  "auth": {},
+  "auth": {
+    "loopback#token": {
+      "params": {
+        "model": "Token"
+      }
+    }
+  },
   "parse": {},
   "routes": {
     "loopback#rest": {

@@ -742,7 +742,14 @@
         "disableInclude": true
       }
     }
-},
-  "acls": [],
+  },
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "addToLogin"
+    }
+  ],
   "methods": {}
 }
