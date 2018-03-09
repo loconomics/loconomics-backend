@@ -13,10 +13,11 @@
       "./mixins"
     ]
   },
-  "User": {
-    "dataSource": "db"
+  "Member": {
+    "dataSource": "db",
+    "public": false
   },
-  "AccessToken": {
+  "Token": {
     "dataSource": "db",
     "public": false
   },

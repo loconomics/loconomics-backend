@@ -1,4 +1,12 @@
 export default (server) => {
   // enable authentication
-  //server.enableAuth()
+  const {db} = server.dataSources
+  // Don't touch the existing Users table in non-development environments for now.
+  if(process.env.NODE_ENV == "dev")
+    db.automigrate("Member")
+  db.automigrate("Token")
+  db.automigrate("ACL")
+  db.automigrate("RoleMapping")
+  db.automigrate("Role")
+  server.enableAuth()
 }

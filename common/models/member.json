@@ -1,7 +1,9 @@
 {
-  "name": "Users",
+  "name": "Member",
+  "base": "User",
+  "idInjection": false,
   "options": {
-    "idInjection": false,
+    "validateUpsert": true,
     "mssql": {
       "schema": "dbo",
       "table": "users"
@@ -10,11 +12,11 @@
   "properties": {
     "userid": {
       "type": "Number",
+      "id": 1,
       "required": true,
       "length": null,
       "precision": 10,
       "scale": 0,
-      "id": 1,
       "mssql": {
         "columnName": "UserID",
         "dataType": "int",
@@ -729,5 +731,18 @@
         "nullable": "YES"
       }
     }
-  }
+  },
+  "validations": [],
+  "relations": {
+    "accessTokens": {
+      "type": "hasMany",
+      "model": "Token",
+      "foreignKey": "userId",
+      "options": {
+        "disableInclude": true
+      }
+    }
+},
+  "acls": [],
+  "methods": {}
 }
