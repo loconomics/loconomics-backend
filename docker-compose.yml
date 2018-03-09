@@ -15,6 +15,7 @@ services:
       context: ./
       dockerfile: Dockerfile.dev
     environment:
+      NODE_ENV: development
       DATABASE_URL: mssql://sa:Password!!11@db/master
       LOCONOMICS_BACKEND_URL: https://dev.loconomics.com
     depends_on:
