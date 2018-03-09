@@ -1,5 +1,3 @@
-'use strict';
+export default (Token) => {
 
-module.exports = function(Token) {
-
-};
+}
