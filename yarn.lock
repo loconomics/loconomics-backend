@@ -1432,7 +1432,7 @@ encodeurl@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"
 
-encoding@^0.1.11:
+encoding@^0.1.11, encoding@^0.1.12:
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/encoding/-/encoding-0.1.12.tgz#538b66f3ee62cd1ab51ec323829d1f9480c74beb"
   dependencies:
@@ -1941,6 +1941,17 @@ getpass@^0.1.1:
   resolved "https://registry.yarnpkg.com/getpass/-/getpass-0.1.7.tgz#5eff8e3e684d569ae4cb2b1282604e8ba62149fa"
   dependencies:
     assert-plus "^1.0.0"
+
+gettext-parser@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/gettext-parser/-/gettext-parser-1.3.1.tgz#74b7a99e4b5fa8daab11fa515e8a582480448a12"
+  dependencies:
+    encoding "^0.1.12"
+    safe-buffer "^5.1.1"
+
+gettext@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/gettext/-/gettext-0.0.1.tgz#95c1bdbe191b57449380973928e0b486cb8beb6b"
 
 glob-base@^0.3.0:
   version "0.3.0"
