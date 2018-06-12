@@ -6,6 +6,6 @@ const proxy = httpProxy.createProxyServer({
 
 const backend = process.env.LOCONOMICS_BACKEND_URL || "https://www.loconomics.com"
 
-export default () => {
-  proxy.web(this.req, this.res, {target: backend})
+export = (req, res) => {
+  proxy.web(req, res, {target: backend})
 }
