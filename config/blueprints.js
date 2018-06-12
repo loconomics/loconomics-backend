@@ -19,6 +19,8 @@ module.exports.blueprints = {
 
   actions: true,
 
+  // Prepend this prefix to all blueprint routes.
+  prefix: '/api/v1',
 
   /***************************************************************************
   *                                                                          *
