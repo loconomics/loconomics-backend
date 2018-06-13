@@ -9,6 +9,7 @@
  * https://sailsjs.com/config/http
  */
 
+var i18n = require("../api/middleware/i18n")
 var proxy = require("../api/middleware/proxy")
 
 module.exports.http = {
@@ -24,6 +25,7 @@ module.exports.http = {
 
   middleware: {
 
+    i18n: i18n,
     proxy: proxy,
 
     /***************************************************************************
@@ -39,12 +41,12 @@ module.exports.http = {
       'bodyParser',
       'compress',
       'poweredBy',
+      'i18n',
       'router',
       'www',
       'favicon',
       'proxy',
     ],
-
 
     /***************************************************************************
     *                                                                          *
