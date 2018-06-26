@@ -9,8 +9,12 @@
  * https://sailsjs.com/config/http
  */
 
-var i18n = require("../api/middleware/i18n")
-var proxy = require("../api/middleware/proxy")
+const MetricsMiddleware = require('http-metrics-middleware')
+
+const i18n = require('../api/middleware/i18n')
+const proxy = require('../api/middleware/proxy')
+
+const metrics = (new MetricsMiddleware()).initRoutes()
 
 module.exports.http = {
 
@@ -25,8 +29,9 @@ module.exports.http = {
 
   middleware: {
 
-    // i18n: i18n,
-    // proxy: proxy,
+    i18n: i18n,
+    metrics: metrics,
+    proxy: proxy,
 
     /***************************************************************************
     *                                                                          *
@@ -36,16 +41,17 @@ module.exports.http = {
     ***************************************************************************/
 
     order: [
+      'metrics',
       'cookieParser',
       'session',
       'bodyParser',
       'compress',
       'poweredBy',
-      // 'i18n',
+      'i18n',
       'router',
       'www',
       'favicon',
-      // 'proxy',
+      'proxy',
     ],
 
     /***************************************************************************

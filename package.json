@@ -13,6 +13,7 @@
     "@types/node": "^10.3.2",
     "async": "^2.6.1",
     "grunt": "^1.0.3",
+    "http-metrics-middleware": "^1.1.0",
     "http-proxy": "^1.17.0",
     "sails": "^1.0.2",
     "sails-hook-grunt": "^3.0.2",
