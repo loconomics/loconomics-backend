@@ -25,8 +25,8 @@ module.exports.http = {
 
   middleware: {
 
-    i18n: i18n,
-    proxy: proxy,
+    // i18n: i18n,
+    // proxy: proxy,
 
     /***************************************************************************
     *                                                                          *
@@ -41,11 +41,11 @@ module.exports.http = {
       'bodyParser',
       'compress',
       'poweredBy',
-      'i18n',
+      // 'i18n',
       'router',
       'www',
       'favicon',
-      'proxy',
+      // 'proxy',
     ],
 
     /***************************************************************************
