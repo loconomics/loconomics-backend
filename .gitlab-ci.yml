@@ -82,6 +82,8 @@ deploy staging image:
   image: microsoft/azure-cli
   script:
   - env
+  # See https://www.terraform.io/docs/providers/azurerm/authenticating_via_service_principal.html when ready to set this up.
+  # - az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
   environment:
     name: staging
     url: https://staging.loconomics.com/
