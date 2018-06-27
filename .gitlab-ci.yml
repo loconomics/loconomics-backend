@@ -11,6 +11,7 @@ build assets:
   stage: build_assets
   image: node:9
   script:
+  - npm install -g yarn
   - git clone https://github.com/loconomics/loconomics
   - cd loconomics/app
   - yarn
