@@ -47,3 +47,5 @@ publish docker image:
   script:
   - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
   - docker load -i image.tar
+  only:
+  - master
