@@ -19,9 +19,10 @@ build assets:
   - cd loconomics/app
   - yarn
   - yarn build
-  cache:
+  artifacts:
     paths:
     - loconomics/app/build
+    expire_in: 1 hour
 
 build backend:
   stage: build_backend
