@@ -12,6 +12,7 @@ build assets:
   image: node:9
   script:
   - npm install -g yarn
+  - chmod +x /usr/local/bin/yarn
   - git clone https://github.com/loconomics/loconomics
   - cd loconomics/app
   - yarn
