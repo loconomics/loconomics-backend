@@ -1,0 +1,31 @@
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_REGISTRY_USER: tools@loconomics.com
+  IMAGE_TAG: loconomics/backend
+
+stages:
+  - build_assets
+  - build_backend
+
+assets:
+  stage: build_assets
+  image: node:9
+  script:
+  - git clone https://github.com/loconomics/loconomics
+  - cd loconomics/app
+  - yarn
+  - yarn build
+  cache:
+    paths:
+    - loconomics/app/build
+
+backend:
+  stage: build_backend
+  image: docker:latest
+  services:
+  - docker:dind
+  script:
+  - cp -R loconomics/app/build/* assets/
+  - rm -rf loconomics/
+  - docker build -t $IMAGE_TAG .
+  - docker save $IMAGE_TAG -o image.tar
