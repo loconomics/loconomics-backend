@@ -7,6 +7,7 @@ stages:
   - build_assets
   - build_backend
   - publish
+  - deploy
 
 build assets:
   stage: build_assets
@@ -39,7 +40,7 @@ build backend:
     - image.tar
     expire_in: 1 hour
 
-publish docker image:
+publish production image:
   stage: publish
   image: docker:latest
   services:
@@ -49,3 +50,30 @@ publish docker image:
   - docker load -i image.tar
   only:
   - master
+
+publish staging image:
+  stage: publish
+  image: docker:latest
+  services:
+  - docker:dind
+  script:
+  - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+  - docker load -i image.tar
+  only:
+  - staging
+
+deploy production image:
+  stage: deploy
+  environment:
+    name: production
+    url: https://www.loconomics.com/
+  only:
+  - master
+
+deploy staging image:
+  stage: deploy
+  environment:
+    name: staging
+    url: https://staging.loconomics.com/
+  only:
+  - staging
