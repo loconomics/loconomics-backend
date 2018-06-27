@@ -50,6 +50,7 @@ publish production image:
   - docker pull $CI_IMAGE_NAME:master
   - docker tag $CI_IMAGE_NAME:master loconomics/backend:latest
   - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+  - docker push loconomics/backend:latest
   only:
   - master
 
@@ -63,6 +64,7 @@ publish staging image:
   - docker pull $CI_IMAGE_NAME:staging
   - docker tag $CI_IMAGE_NAME:master loconomics/backend:staging
   - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+  - docker push loconomics/backend:staging
   only:
   - staging
 
