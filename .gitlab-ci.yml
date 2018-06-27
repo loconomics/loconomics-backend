@@ -64,6 +64,8 @@ publish staging image:
 
 deploy production image:
   stage: deploy
+  script:
+  - env
   environment:
     name: production
     url: https://www.loconomics.com/
@@ -72,6 +74,8 @@ deploy production image:
 
 deploy staging image:
   stage: deploy
+  script:
+  - env
   environment:
     name: staging
     url: https://staging.loconomics.com/
