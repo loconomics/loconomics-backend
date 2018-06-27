@@ -34,6 +34,10 @@ build backend:
   - rm -rf loconomics/
   - docker build -t $IMAGE_TAG .
   - docker save $IMAGE_TAG -o image.tar
+  artifacts:
+    paths:
+    - image.tar
+    expire_in: 1 hour
 
 publish docker image:
   stage: publish
@@ -42,3 +46,4 @@ publish docker image:
   - docker:dind
   script:
   - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+  - docker load -i image.tar
