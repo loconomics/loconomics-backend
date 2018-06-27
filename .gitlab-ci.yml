@@ -7,7 +7,7 @@ stages:
   - build_assets
   - build_backend
 
-assets:
+build assets:
   stage: build_assets
   image: node:9
   script:
@@ -19,7 +19,7 @@ assets:
     paths:
     - loconomics/app/build
 
-backend:
+build backend:
   stage: build_backend
   image: docker:latest
   services:
