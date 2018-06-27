@@ -1,7 +1,8 @@
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_REGISTRY_USERNAME: loconomics
-  IMAGE_TAG: loconomics/backend
+  CI_IMAGE_NAME: $CI_REGISTRY/$CI_PROJECT_PATH
+  DOCKER_IMAGE_NAME: hub.docker.com/$CI_PROJECT_PATH
 
 stages:
   - build_assets
@@ -33,12 +34,11 @@ build backend:
   script:
   - cp -R loconomics/app/build/* assets/
   - rm -rf loconomics/
-  - docker build -t $IMAGE_TAG .
-  - docker save $IMAGE_TAG -o image.tar
-  artifacts:
-    paths:
-    - image.tar
-    expire_in: 1 hour
+  - docker build -t $CI_IMAGE_NAME: .
+  - docker tag $CI_IMAGE_NAME $CI_IMAGE_NAME:$CI_COMMIT_REF_SLUG
+  - docker tag $CI_IMAGE_NAME $CI_IMAGE_NAME:$CI_COMMIT_SHA
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  - docker push $CI_IMAGE_NAME
 
 publish production image:
   stage: publish
@@ -46,8 +46,10 @@ publish production image:
   services:
   - docker:dind
   script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  - docker pull $CI_IMAGE_NAME:master
+  - docker tag $CI_IMAGE_NAME:master loconomics/backend:latest
   - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
-  - docker load -i image.tar
   only:
   - master
 
@@ -57,13 +59,16 @@ publish staging image:
   services:
   - docker:dind
   script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  - docker pull $CI_IMAGE_NAME:staging
+  - docker tag $CI_IMAGE_NAME:master loconomics/backend:staging
   - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
-  - docker load -i image.tar
   only:
   - staging
 
 deploy production image:
   stage: deploy
+  image: microsoft/azure-cli
   script:
   - env
   environment:
@@ -74,6 +79,7 @@ deploy production image:
 
 deploy staging image:
   stage: deploy
+  image: microsoft/azure-cli
   script:
   - env
   environment:
