@@ -2,7 +2,7 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_REGISTRY_USERNAME: loconomics
   CI_IMAGE_NAME: $CI_REGISTRY/$CI_PROJECT_PATH
-  DOCKER_IMAGE_NAME: hub.docker.com/$CI_PROJECT_PATH
+  DOCKER_IMAGE_NAME: loconomics/loconomics
 
 stages:
   - build_assets
@@ -48,9 +48,9 @@ publish production image:
   script:
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   - docker pull $CI_IMAGE_NAME:master
-  - docker tag $CI_IMAGE_NAME:master loconomics/backend:latest
+  - docker tag $CI_IMAGE_NAME:master $DOCKER_IMAGE_NAME:latest
   - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
-  - docker push loconomics/backend:latest
+  - docker push $DOCKER_IMAGE_NAME:latest
   only:
   - master
 
@@ -62,9 +62,9 @@ publish staging image:
   script:
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   - docker pull $CI_IMAGE_NAME:staging
-  - docker tag $CI_IMAGE_NAME:master loconomics/backend:staging
+  - docker tag $CI_IMAGE_NAME:master $DOCKER_IMAGE_NAME:staging
   - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
-  - docker push loconomics/backend:staging
+  - docker push $DOCKER_IMAGE_NAME:staging
   only:
   - staging
 
