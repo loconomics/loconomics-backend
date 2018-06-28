@@ -34,10 +34,11 @@ build backend:
   script:
   - cp -R loconomics/app/build/* assets/
   - rm -rf loconomics/
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  - docker pull $CI_IMAGE_NAME:$CI_COMMIT_REF_SLUG
   - docker build -t $CI_IMAGE_NAME .
   - docker tag $CI_IMAGE_NAME $CI_IMAGE_NAME:$CI_COMMIT_REF_SLUG
   - docker tag $CI_IMAGE_NAME $CI_IMAGE_NAME:$CI_COMMIT_SHA
-  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   - docker push $CI_IMAGE_NAME
 
 publish production image:
