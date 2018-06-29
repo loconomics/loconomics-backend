@@ -108,6 +108,6 @@ resource "godaddy_domain_record" "domain" {
     name = "${terraform.workspace}"
     type = "CNAME"
     data = "loconomics-${terraform.workspace}.azurewebsites.net"
-    ttl = 60
+    ttl = 600
   }
 }
