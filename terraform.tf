@@ -1,3 +1,11 @@
+terraform {
+  backend "azurerm" {
+    storage_account_name = "lctfstate"
+    container_name       = "tfstate"
+    key                  = "prod.terraform.tfstate"
+  }
+}
+
 resource "azurerm_resource_group" "app" {
   name     = "app-${terraform.workspace}"
   location = "West US"
