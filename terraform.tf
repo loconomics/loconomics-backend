@@ -1,12 +1,3 @@
-variable "godaddy_api_key" {}
-
-variable "godaddy_api_secret" {}
-
-provider "godaddy" {
-  key = "${var.godaddy_api_key}"
-  secret = "${var.godaddy_api_secret}"
-}
-
 resource "azurerm_resource_group" "app" {
   name     = "app-${terraform.workspace}"
   location = "West US"
@@ -98,14 +89,4 @@ DEPLOY
   }
 
   deployment_mode = "Incremental"
-}
-
-resource "godaddy_domain_record" "domain" {
-  domain   = "loconomics.com"
-  record {
-    name = "${terraform.workspace}"
-    type = "CNAME"
-    data = "loconomics-${terraform.workspace}.azurewebsites.net"
-    ttl = 600
-  }
 }
