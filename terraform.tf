@@ -61,14 +61,14 @@ resource "azurerm_template_deployment" "app" {
       }
     }
   },
-  "variables": {
-  },
   "resources": [
     {
-      "type": "Microsoft.Web/sites",
+      "apiVersion": "2016-08-01",
       "kind": "app,linux,container",
       "name": "[parameters('name')]",
+      "type": "Microsoft.Web/sites",
       "properties": {
+        "name": "[parameters('name')]",
         "siteConfig": {
           "alwaysOn": true,
           "appSettings": [
@@ -83,10 +83,8 @@ resource "azurerm_template_deployment" "app" {
           ],
           "linuxFxVersion": "[concat('DOCKER|', parameters('image'))]"
         },
-        "name": "[parameters('name')]",
         "serverFarmId": "[parameters('app_service_plan_id')]"
       },
-      "apiVersion": "2016-08-01",
       "location": "[resourceGroup().location]"
     }
   ]
