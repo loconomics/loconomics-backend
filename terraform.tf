@@ -1,3 +1,5 @@
+variable "sql_server_password" {}
+
 terraform {
   backend "azurerm" {
     storage_account_name = "lctfstate"
@@ -12,7 +14,7 @@ resource "azurerm_resource_group" "app" {
 }
 
 resource "azurerm_resource_group" "app_deployment" {
-  name     = "app-${terraform.workspace}-deployment"
+  name = "app-${terraform.workspace}-deployment"
   location = "West US"
 }
 
@@ -24,6 +26,37 @@ resource "azurerm_app_service_plan" "plan" {
   sku {
     tier = "Standard"
     size = "S1"
+  }
+}
+
+resource "random_string" "sql_server_password" {
+  length = 64
+  upper = true
+  min_upper = 1
+  lower = true
+  min_lower = 1
+  number = true
+  min_numeric = 1
+  special = true
+  min_special = 1
+}
+
+resource "azurerm_sql_server" "sql_server" {
+  name                         = "loconomics-${terraform.workspace}"
+  location = "${azurerm_resource_group.app.location}"
+  resource_group_name = "${azurerm_resource_group.app.name}"
+  version                      = "12.0"
+  administrator_login          = "loconomics"
+  administrator_login_password = "${random_string.sql_server_password.result}"
+}
+
+resource "azurerm_sql_database" "sql_server_database" {
+  name                = "loconomics"
+  location = "${azurerm_resource_group.app.location}"
+  resource_group_name = "${azurerm_resource_group.app.name}"
+  server_name = "${azurerm_sql_server.sql_server.name}"
+  provisioner "local-exec" {
+    command = "mssql-scripter -U dev-loconomis -P ${var.sql_server_password} -S dev-loconomics.database.windows.net -d Dev >dev.sql"
   }
 }
 
