@@ -13,22 +13,6 @@ resource "azurerm_resource_group" "app" {
   location = "West US"
 }
 
-resource "azurerm_resource_group" "app_deployment" {
-  name = "app-${terraform.workspace}-deployment"
-  location = "West US"
-}
-
-resource "azurerm_app_service_plan" "plan" {
-  name = "plan"
-  location = "${azurerm_resource_group.app.location}"
-  resource_group_name = "${azurerm_resource_group.app.name}"
-  kind = "Linux"
-  sku {
-    tier = "Standard"
-    size = "S1"
-  }
-}
-
 resource "random_string" "sql_server_password" {
   length = 64
   upper = true
@@ -70,6 +54,22 @@ resource "azurerm_sql_database" "sql_server_database" {
   }
   provisioner "local-exec" {
     command = "sqlcmd -S ${azurerm_sql_server.sql_server.fully_qualified_domain_name} -U ${azurerm_sql_server.sql_server.administrator_login} -P \"${azurerm_sql_server.sql_server.administrator_login_password}\" -i dev.sql"
+  }
+}
+
+resource "azurerm_resource_group" "app_deployment" {
+  name = "app-${terraform.workspace}-deployment"
+  location = "West US"
+}
+
+resource "azurerm_app_service_plan" "plan" {
+  name = "plan"
+  location = "${azurerm_resource_group.app.location}"
+  resource_group_name = "${azurerm_resource_group.app.name}"
+  kind = "Linux"
+  sku {
+    tier = "Standard"
+    size = "S1"
   }
 }
 
