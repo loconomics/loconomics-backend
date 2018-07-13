@@ -22,6 +22,7 @@ services:
       MSSQLSERVER_PASSWORD: Password!!11
       MSSQLSERVER_DATABASE: master
       LOCONOMICS_BACKEND_URL: https://dev.loconomics.com
+      PATH: /usr/local/bin:/usr/bin:/bin:/host/node_modules/.bin
     depends_on:
       - mssqlserver
     ports:
