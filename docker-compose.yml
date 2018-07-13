@@ -2,7 +2,7 @@ version: "3"
 
 services:
 
-  db:
+  mssqlserver:
     image: microsoft/mssql-server-linux
     environment:
       ACCEPT_EULA: Y
@@ -15,12 +15,15 @@ services:
       context: ./
       dockerfile: Dockerfile.dev
     environment:
-      DATABASE_URL: mssql://sa:Password!!11@db/master
+      MSSQLSERVER_HOST: mssqlserver
+      MSSQLSERVER_USER: sa
+      MSSQLSERVER_PASSWORD: Password!!11
+      MSSQLSERVER_DATABASE: master
       LOCONOMICS_BACKEND_URL: https://dev.loconomics.com
     depends_on:
-      - db
+      - mssqlserver
     ports:
-      - 3000:3000
+      - 1337:1337
     volumes:
       - ./:/host
     working_dir: /host
