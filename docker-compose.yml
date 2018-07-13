@@ -9,6 +9,8 @@ services:
       SA_PASSWORD: Password!!11
     volumes:
       - ./:/host
+    ports:
+      - 1433:1433
 
   web:
     build:
