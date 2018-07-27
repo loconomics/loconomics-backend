@@ -5,35 +5,16 @@ variables:
   DOCKER_IMAGE_NAME: loconomics/loconomics
 
 stages:
-  - build_assets
-  - build_backend
+  - build
   - publish
   - deploy
 
-build assets:
-  stage: build_assets
-  image: node:9
-  script:
-  - npm install -g yarn
-  - chmod +x /usr/local/bin/yarn
-  - git clone https://github.com/loconomics/loconomics
-  - rm .eslint*
-  - cd loconomics/app
-  - yarn
-  - yarn build
-  artifacts:
-    paths:
-    - loconomics/app/build
-    expire_in: 1 hour
-
 build backend:
-  stage: build_backend
+  stage: build
   image: docker:latest
   services:
   - docker:dind
   script:
-  - cp -R loconomics/app/build/* assets/
-  - rm -rf loconomics/
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   - docker pull $CI_IMAGE_NAME:$CI_COMMIT_REF_SLUG
   - docker build -t $CI_IMAGE_NAME .
@@ -50,8 +31,10 @@ publish production image:
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   - docker pull $CI_IMAGE_NAME:master
   - docker tag $CI_IMAGE_NAME:master $DOCKER_IMAGE_NAME:latest
+  - docker tag $CI_IMAGE_NAME:master $DOCKER_IMAGE_NAME:default
   - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
   - docker push $DOCKER_IMAGE_NAME:latest
+  - docker push $DOCKER_IMAGE_NAME:default
   only:
   - master
 
@@ -63,7 +46,6 @@ publish staging image:
   script:
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   - docker pull $CI_IMAGE_NAME:staging
-  - docker tag $CI_IMAGE_NAME:master $DOCKER_IMAGE_NAME:staging
   - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
   - docker push $DOCKER_IMAGE_NAME:staging
   only:
