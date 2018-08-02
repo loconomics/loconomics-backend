@@ -16,7 +16,7 @@ build backend:
   - docker:dind
   script:
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-  - docker pull $CI_IMAGE_NAME:$CI_COMMIT_REF_SLUG
+  - docker pull $CI_IMAGE_NAME:$CI_COMMIT_REF_SLUG || true
   - docker build -t $CI_IMAGE_NAME .
   - docker tag $CI_IMAGE_NAME $CI_IMAGE_NAME:$CI_COMMIT_REF_SLUG
   - docker tag $CI_IMAGE_NAME $CI_IMAGE_NAME:$CI_COMMIT_SHA
