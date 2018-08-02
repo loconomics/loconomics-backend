@@ -51,7 +51,7 @@ publish staging image:
   only:
   - staging
 
-deploy production image:
+.deploy production image:
   stage: deploy
   image: microsoft/azure-cli
   script:
@@ -62,7 +62,7 @@ deploy production image:
   only:
   - master
 
-deploy staging image:
+.deploy staging image:
   stage: deploy
   image: microsoft/azure-cli
   script:
