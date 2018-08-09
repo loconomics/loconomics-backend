@@ -195,3 +195,12 @@ resource "azurerm_application_gateway" "gateway" {
   }
 
 }
+
+data "azurerm_public_ip" "ip" {
+  name                = "${azurerm_public_ip.ip.name}"
+  resource_group_name = "${azurerm_resource_group.app.name}"
+}
+
+output "ip_address" {
+  value = "${data.azurerm_public_ip.ip.ip_address}"
+}
