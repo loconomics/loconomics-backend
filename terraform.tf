@@ -134,14 +134,6 @@ resource "azurerm_application_gateway" "gateway" {
     public_ip_address_id = "${azurerm_public_ip.ip.id}"
   }
 
-  backend_http_settings {
-    name = "${azurerm_virtual_network.vnet.name}-backend-http-settings"
-    cookie_based_affinity = "Disabled"
-    port = 80
-    protocol = "Http"
-    request_timeout = 1
-  }
-
   frontend_port {
     name = "${azurerm_virtual_network.vnet.name}-port"
     port = 80
@@ -176,6 +168,44 @@ resource "azurerm_application_gateway" "gateway" {
     url_path_map_name = "paths"
   }
 
+  probe {
+    name                = "probe"
+    protocol            = "Https"
+    path                = "/api"
+    host                = "loconomics-${terraform.workspace}.azurewebsites.net"
+    timeout             = 120
+    interval            = 300
+    unhealthy_threshold = 8
+  }
+
+  backend_http_settings {
+    name = "${azurerm_virtual_network.vnet.name}-backend-http-settings"
+    cookie_based_affinity = "Disabled"
+    port = 443
+    protocol = "Https"
+    request_timeout = 1
+    probe_name = "probe"
+  }
+
+  probe {
+    name                = "pages-probe"
+    protocol            = "Https"
+    path                = "/pages/"
+    host                = "loconomics-pages.azurewebsites.net"
+    timeout             = 120
+    interval            = 300
+    unhealthy_threshold = 8
+  }
+
+  backend_http_settings {
+    name = "${azurerm_virtual_network.vnet.name}-pages-http-settings"
+    cookie_based_affinity = "Disabled"
+    port = 443
+    protocol = "Https"
+    request_timeout = 1
+    probe_name = "pages-probe"
+  }
+
   url_path_map {
     name = "paths"
     default_backend_address_pool_name = "${azurerm_virtual_network.vnet.name}-root-pool"
@@ -190,7 +220,7 @@ resource "azurerm_application_gateway" "gateway" {
       name = "pages"
       paths = ["/pages/*"]
       backend_address_pool_name = "${azurerm_virtual_network.vnet.name}-pages-pool"
-      backend_http_settings_name = "${azurerm_virtual_network.vnet.name}-backend-http-settings"
+      backend_http_settings_name = "${azurerm_virtual_network.vnet.name}-pages-http-settings"
     }
   }
 
