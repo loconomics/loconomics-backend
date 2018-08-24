@@ -1,5 +1,4 @@
 module.exports = {
-
   attributes: {
     id: {
       type: 'number',
