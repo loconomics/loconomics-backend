@@ -12,7 +12,8 @@
 const MetricsMiddleware = require('http-metrics-middleware')
 
 const i18n = require('../api/middleware/i18n')
-const proxy = require('../api/middleware/proxy')
+const backend = require('../api/middleware/proxy').backend
+const pages = require('../api/middleware/proxy').pages
 
 const metrics = (new MetricsMiddleware()).initRoutes()
 
@@ -31,7 +32,8 @@ module.exports.http = {
 
     i18n: i18n,
     metrics: metrics,
-    proxy: proxy,
+    backend: backend,
+    pages: pages,
 
     /***************************************************************************
     *                                                                          *
@@ -51,7 +53,8 @@ module.exports.http = {
       'router',
       'www',
       'favicon',
-      'proxy',
+      'pages',
+      'backend',
     ],
 
     /***************************************************************************
