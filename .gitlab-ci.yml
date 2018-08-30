@@ -63,8 +63,6 @@ publish staging image:
   - master
 
 deploy staging image:
-  variables:
-    CI_DEBUG_TRACE: "true"
   stage: deploy
   image: microsoft/azure-cli
   script:
