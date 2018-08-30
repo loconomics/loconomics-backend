@@ -4,8 +4,14 @@ const proxy = httpProxy.createProxyServer({
   changeOrigin: true
 })
 
-const backend = process.env.LOCONOMICS_BACKEND_URL || "https://www.loconomics.com"
+const BACKEND = process.env.LOCONOMICS_BACKEND_URL || "https://www.loconomics.com"
 
-export = (req, res) => {
-  proxy.web(req, res, {target: backend})
+export const backend = (req, res) => {
+  proxy.web(req, res, {target: BACKEND})
+}
+
+export const pages = (req, res, next) => {
+  if(req.path.startsWith("/pages"))
+    return proxy.web(req, res, {target: "https://loconomics-pages.azurewebsites.net"})
+  next()
 }

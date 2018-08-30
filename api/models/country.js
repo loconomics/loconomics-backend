@@ -1,5 +1,4 @@
 module.exports = {
-
   attributes: {
     id: {
       type: 'number',
@@ -33,5 +32,4 @@ module.exports = {
     },
     modifiedBy: { type: 'string', required: true }
   },
-
 };

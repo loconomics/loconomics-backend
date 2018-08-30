@@ -46,6 +46,7 @@ publish staging image:
   script:
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   - docker pull $CI_IMAGE_NAME:staging
+  - docker tag $CI_IMAGE_NAME:staging $DOCKER_IMAGE_NAME:staging
   - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
   - docker push $DOCKER_IMAGE_NAME:staging
   only:
@@ -55,23 +56,22 @@ publish staging image:
   stage: deploy
   image: microsoft/azure-cli
   script:
-  - env
+  - az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
+  - az webapp restart -g app-staging -n loconomics-staging
   environment:
     name: production
     url: https://www.loconomics.com/
   only:
   - master
 
-.deploy staging image:
+deploy staging image:
   stage: deploy
   image: microsoft/azure-cli
   script:
-  - env
-  # See https://www.terraform.io/docs/providers/azurerm/authenticating_via_service_principal.html when ready to set this up.
   - az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
-  - az webapp restart -g app-staging -n app-staging
+  - az webapp restart -g app-staging -n loconomics-staging
   environment:
     name: staging
-    url: https://staging.loconomics.com/
+    url: http://staging.loconomics.com/
   only:
   - staging
