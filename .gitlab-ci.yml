@@ -45,6 +45,7 @@ publish staging image:
   script:
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   - docker pull $CI_IMAGE_NAME:staging
+  - docker tag $CI_IMAGE_NAME:staging $DOCKER_IMAGE_NAME:staging
   - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
   - docker push $DOCKER_IMAGE_NAME:staging
   only:
