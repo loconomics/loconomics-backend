@@ -11,7 +11,10 @@ export const backend = (req, res) => {
 }
 
 export const pages = (req, res, next) => {
-  if(req.path.startsWith("/pages"))
+  if(req.path.startsWith("/pages")) {
+    if(req.path == "/pages")
+      res.redirect("/pages/")
     return proxy.web(req, res, {target: "https://loconomics-pages.azurewebsites.net"})
+  }
   next()
 }
