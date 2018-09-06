@@ -12,10 +12,13 @@ module.exports = {
         stateProvinceCode: "CA",
         stateProvinceName: "California"
       }
+    },
+    notFound: {
+      responseType: "notFound"
     }
   },
   fn: async function(inputs, exits) {
     const {id} = inputs
-    return exits.success({response: "OK"})
+    return exits.notFound({errorMessage: "Postal Code Not Valid."})
   }
 }
