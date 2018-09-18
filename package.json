@@ -19,7 +19,6 @@
     "sails-hook-grunt": "^3.0.2",
     "sails-hook-orm": "^2.0.0-16",
     "sails-hook-sockets": "^1.4.0",
-    "sails-mssqlserver": "ndarilek/sails-mssqlserver#v1",
     "ts-node": "^7.0.0",
     "typescript": "^2.9.1"
   },
@@ -33,7 +32,7 @@
     "test": "npm run lint && npm run custom-tests && echo 'Done.'",
     "lint": "eslint . --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
     "custom-tests": "echo \"(No other custom tests yet.)\" && echo",
-    "console": "docker-compose exec web sails console --dontLift"
+    "console": "docker-compose exec web yarn ts-node node_modules/.bin/sails console --dontLift"
   },
   "main": "app.js",
   "repository": {

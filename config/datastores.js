@@ -48,15 +48,9 @@ module.exports.datastores = {
     *    (See https://sailsjs.com/config/datastores for help.)                 *
     *                                                                          *
     ***************************************************************************/
-    adapter: 'sails-mssqlserver',
-    user: process.env.MSSQLSERVER_USER,
-    password: process.env.MSSQLSERVER_PASSWORD,
-    host: process.env.MSSQLSERVER_HOST,
-    database: process.env.MSSQLSERVER_DATABASE,
-    options: {
-      encrypt: process.env.NODE_ENV == 'production' ? true : false
-    }
-    
+    // adapter: 'sails-mysql',
+    // url: 'mysql://user:password@host:port/database',
+
   },
 
 
