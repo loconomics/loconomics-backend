@@ -1,7 +1,7 @@
 declare var sails: any;
 
 module.exports = {
-  friendlyName: 'States/pronvices lookup',
+  friendlyName: 'States/provinces lookup',
   description: 'Lists states/provinces for the current country',
   exits: {
     success: {
