@@ -26,6 +26,7 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  'GET /api/v1/event-types': 'event-types',
   'GET /api/v1/postal-codes/:id': 'postal-codes',
   'GET /api/v1/states-provinces': 'states-provinces'
 
