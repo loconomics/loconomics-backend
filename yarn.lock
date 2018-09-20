@@ -119,6 +119,13 @@
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.0.tgz#5a7306e367c539b9f6543499de8dd519fac37a8b"
 
+"@types/mssql@^4.0.10":
+  version "4.0.10"
+  resolved "https://registry.yarnpkg.com/@types/mssql/-/mssql-4.0.10.tgz#cfb94588c652db07b0751bb3d7dbfadd1d50a9d3"
+  dependencies:
+    "@types/events" "*"
+    "@types/node" "*"
+
 "@types/node@*":
   version "10.3.6"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.6.tgz#ea8aab9439b59f40d19ec5f13b44642344872b11"

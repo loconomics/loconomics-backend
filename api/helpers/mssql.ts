@@ -1,5 +1,7 @@
 const sql = require('mssql')
 
+declare var sails: any;
+
 const pool = new sql.ConnectionPool(sails.config.custom.mssqlServerURL)
   .connect()
   .then((pool) => pool)

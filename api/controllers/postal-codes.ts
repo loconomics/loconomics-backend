@@ -1,3 +1,5 @@
+declare var sails: any;
+
 module.exports = {
   friendlyName: 'Postal code lookup',
   description: 'Looks up a postal code, returning data on the city and state/province',
