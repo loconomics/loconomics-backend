@@ -58,6 +58,6 @@ The current backend handles multi-level URLs in a single endpoint, however this 
 
 ### Authentication
 
-Authentication is presently handled in the current backend, but the new backend needs access to this status. As such, the current backend provisions a UUID token to authenticated users, which the frontend treats as a bearer token. The new backend looks up the user by token and populates `req.user`.
+Authentication is presently handled in the current backend, but the new backend needs access to this status. As such, the current backend provisions a UUID token to authenticated users, which the frontend treats as a bearer token. The new backend looks up the user by token and populates `this.req.user`.
 
-Note: This is only stubbed at the moment. Full implementation coming soon.
+[api/controllers/test/authentication.ts](../api/controllers/test/authentication.ts) demonstrates accessing the authenticated user from within an action. Actions are marked authenticated by adding a [policy](https://sailsjs.com/documentation/concepts/policies) entry in [config/policies.js](../config/policies.js). Low-level details of implementing authentication are handled by [Passport](http://www.passportjs.org), which lets us pick from hundreds of additional authentication strategies to add if desired.
