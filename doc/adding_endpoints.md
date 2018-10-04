@@ -50,7 +50,9 @@ Querying by ID, or some other provided field type, is another common API pattern
 
 Notice that the `id` input is marked as required. Inputs can take many forms. They can be provided as query parameters, path components, or form parameters. In this case, the _/postal-codes_ route in _config/routes.js_ specifically indicates a `:id` path component. Other endpoints expect their inputs to be provided as query parameters, and conditionally react based on their presence or absence.
 
-### Optional search term, listing if not provided
+### Multiple input parameters
+
+[api/controllers/specializations.ts](../api/controllers/specializations.ts) is an action with `searchTerm` and `solutionID` inputs passed as query parameters. In this instance, they are both required, but this same pattern can be extended out to many more inputs. Inputs can be optional by omitting `required: true`, and code can conditionally run by checking whether or not the given input is defined.
 
 ### Multi-level URLs
 
