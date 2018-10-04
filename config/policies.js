@@ -19,6 +19,7 @@ module.exports.policies = {
 
   // '*': true,
 
+  'platforms': 'authenticated',
   'test/authentication': 'authenticated'
 
 };
