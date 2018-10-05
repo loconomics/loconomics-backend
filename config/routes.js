@@ -28,6 +28,7 @@ module.exports.routes = {
 
   'GET /api/v1/availability-types': 'availability-types',
   'GET /api/v1/event-types': 'event-types',
+  'GET /api/v1/license-certification/:id': 'license-certification',
   'GET /api/v1/postal-codes/:id': 'postal-codes',
   'GET /api/v1/posting-templates/:id': 'posting-templates',
   'GET /api/v1/platforms': 'platforms',
