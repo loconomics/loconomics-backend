@@ -1,54 +1,52 @@
 declare var sails: any;
 
 module.exports = {
-  friendlyName: 'Fetchs user public profile information.',
+  friendlyName: 'Fetches user public profile information.',
   description: 'Basic info as name (firstName, lastName,..), publicBio, \
     contact data (email, phone), isFreelancer flag. \
     When service professional, other fields are included as businessName, \
     websiteUrl (is contact data), profileUrlSlug.',
   inputs: {
     id: {
-      example: "141",
+      example: '141',
       required: true
     }
   },
   exits: {
     success: {
       outputExample: {
-        businessName: "Loconomics",
-        email: "iago@loconomics.com",
-        firstName: "Iago",
+        businessName: 'Loconomics',
+        email: 'iago@loconomics.com',
+        firstName: 'Iago',
         isClient: true,
         isOrganization: false,
         isServiceProfessional: true,
-        lastName: "Lorenzo Salgueiro",
-        orgDescription: "Tools for small business owners",
-        orgName: "Loconomics",
-        orgWebsite: "https://dev.loconomics.com",
-        phone: "720-555-5555",
-        photoUrl: "https://dev.loconomics.com/en-US/Profile/Photo/141?v=2018-09-19T18:47:48",
-        publicBio: "My public bio.",
-        secondLastName: "",
-        serviceProfessionalProfileUrl: "https://dev.loconomics.com/-iagosrl",
-        serviceProfessionalProfileUrlSlug: "iagosrl",
-        serviceProfessionalWebsiteUrl: "https://dev.loconomics.com",
-        timeZone: "America/Los_Angeles",
-        updatedDate: "2018-09-19T18:47:48.637-07:00",
+        lastName: 'Lorenzo Salgueiro',
+        orgDescription: 'Tools for small business owners',
+        orgName: 'Loconomics',
+        orgWebsite: 'https://dev.loconomics.com',
+        phone: '720-555-5555',
+        photoUrl: 'https://dev.loconomics.com/en-US/Profile/Photo/141?v=2018-09-19T18:47:48',
+        publicBio: 'My public bio.',
+        secondLastName: '',
+        serviceProfessionalProfileUrl: 'https://dev.loconomics.com/-iagosrl',
+        serviceProfessionalProfileUrlSlug: 'iagosrl',
+        serviceProfessionalWebsiteUrl: 'https://dev.loconomics.com',
+        timeZone: 'America/Los_Angeles',
+        updatedDate: '2018-09-19T18:47:48.637-07:00',
         userID: 141
       }
     },
     notFound: {
-      responseType: "notFound"
+      responseType: 'notFound'
     }
   },
   fn: async function(inputs, exits) {
     const targetUserId = this.req.param('id')
-    let requesterUserId = -1
-    if(this.req.user){
-      requesterUserId = this.req.user.UserID
-    }
+    const requesterUserId = await sails.helpers.currentUserId(this.req)
+
     const sql = await sails.helpers.mssql()
-    let profileData = await sql.query(`SELECT TOP 1
+    const profileData = await sql.query(`SELECT TOP 1
                 -- ID
                 Users.userID
                 -- Name
@@ -89,19 +87,24 @@ module.exports = {
                 -- Users must be active (no deleted and publicly active) OR to exist in relationship with the other user (active or not, but with record)
               AND (Users.Active = 1 AND Users.AccountStatusID = 1 OR PC.Active is not null)`)
     const userProfile = profileData.recordset[0]
+    if (!userProfile)
+      return exits.notFound()
+
+    const {baseUrl} = this.req
     const updatedDate = new Date(userProfile.updatedDate).toISOString()
+
     // Build photo URL
-    const photoUrl = this.req.baseUrl.toString()
-      + '/' + this.req.headers['accept-language']
-      + '/Profile/Photo/' + targetUserId + '?v=' + updatedDate.split('.')[0]
+    const lang = this.req.headers['accept-language']
+    const photoUrl = `${baseUrl}/${lang}/Profile/Photo/${targetUserId}?v=${updatedDate.split('.')[0]}`
+
     // Build serviceProfessionalProfileUrl from serviceProfessionalProfileUrlSlug
-    // TODO Implement ASP.LcHelpers.StringSlugify() to make consistent slugs
-    let serviceProfessionalProfileUrl = ''
     const customUrlPrefix = '-'
-    if (userProfile.serviceProfessionalProfileUrlSlug) {
-      serviceProfessionalProfileUrl = this.req.baseUrl.toString() + '/'
-        + customUrlPrefix + userProfile.serviceProfessionalProfileUrlSlug
-    }
+    const slug = userProfile.serviceProfessionalProfileUrlSlug
+    const {stringSlugify} = sails.helpers
+    const serviceProfessionalProfileUrl = !!slug
+      ? `${baseUrl}/${customUrlPrefix}${stringSlugify(slug)}`
+      : ''
+
     const record = {
       businessName: userProfile.businessName,
       email: userProfile.Email,
@@ -121,10 +124,9 @@ module.exports = {
       serviceProfessionalProfileUrlSlug: userProfile.serviceProfessionalProfileUrlSlug,
       serviceProfessionalWebsiteUrl: userProfile.serviceProfessionalWebsiteUrl,
       timeZone: userProfile.timeZone,
-      updatedDate: updatedDate.split('Z')[0] + '-07:00',
+      updatedDate: `${updatedDate.split('Z')[0]}-07:00`,
       userID: userProfile.UserID
     }
-    sails.log('userProfile: ' + JSON.stringify(userProfile))
     return exits.success(record)
   }
 }
