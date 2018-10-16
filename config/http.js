@@ -11,7 +11,7 @@
 
 const MetricsMiddleware = require('http-metrics-middleware')
 
-const authentication = require('../api/middleware/authentication')
+const {authenticate, initialize} = require('../api/middleware/authentication')
 const i18n = require('../api/middleware/i18n')
 const backend = require('../api/middleware/proxy').backend
 const pages = require('../api/middleware/proxy').pages
@@ -30,7 +30,8 @@ module.exports.http = {
   ****************************************************************************/
 
   middleware: {
-    authentication: authentication,
+    initializeAuthentication: initialize,
+    authenticate: authenticate,
     i18n: i18n,
     metrics: metrics,
     backend: backend,
@@ -50,7 +51,8 @@ module.exports.http = {
       'bodyParser',
       'compress',
       'poweredBy',
-      'authentication',
+      'initializeAuthentication',
+      'authenticate',
       'i18n',
       'router',
       'www',
