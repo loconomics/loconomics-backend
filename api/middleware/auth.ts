@@ -27,6 +27,7 @@ const defineAbilitiesFor = (user) => AbilityBuilder.define((allow, forbid) => {
 export const auth = (req, res, next) => {
   passport.authenticate('bearer', (err, user, info) => {
     req.authenticated = !!user
+    req.user = !!user ? user : undefined
     defineAbilitiesFor(user)
     next()
   })(req, res, next);

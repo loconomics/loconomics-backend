@@ -43,7 +43,9 @@ module.exports = {
   },
   fn: async function(inputs, exits) {
     const targetUserId = this.req.param('id')
-    const requesterUserId = await sails.helpers.currentUserId(this.req)
+    const requesterUserId = !!this.req.user
+      ? this.req.user.UserID
+      : -1
 
     const sql = await sails.helpers.mssql()
     const profileData = await sql.query(`SELECT TOP 1
@@ -95,7 +97,8 @@ module.exports = {
 
     // Build photo URL
     const lang = this.req.headers['accept-language']
-    const photoUrl = `${baseUrl}/${lang}/Profile/Photo/${targetUserId}?v=${updatedDate.split('.')[0]}`
+    const updatedSecondPrecision = updatedDate.split('.')[0]
+    const photoUrl = `${baseUrl}/${lang}/Profile/Photo/${targetUserId}?v=${updatedSecondPrecision}`
 
     // Build serviceProfessionalProfileUrl from serviceProfessionalProfileUrlSlug
     const customUrlPrefix = '-'
