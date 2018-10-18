@@ -1,3 +1,4 @@
+import { AbilityBuilder } from '@casl/ability'
 import BearerStrategy = require('passport-http-bearer')
 import passport = require('passport')
 
@@ -19,9 +20,14 @@ passport.use(new BearerStrategy(
   },
 ))
 
-export const authenticate = (req, res, next) => {
+const defineAbilitiesFor = (user) => AbilityBuilder.define((allow, forbid) => {
+  // Create rules as per https://stalniy.github.io/casl/abilities/2017/07/20/define-abilities.html.
+})
+
+export const auth = (req, res, next) => {
   passport.authenticate('bearer', (err, user, info) => {
     req.authenticated = !!user
+    defineAbilitiesFor(user)
     next()
   })(req, res, next);
 }

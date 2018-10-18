@@ -65,3 +65,9 @@ Logging in/out, account management, etc. is presently handled in the current bac
 [api/controllers/test/authentication.ts](../api/controllers/test/authentication.ts) demonstrates accessing the authenticated user from within an action. Actions where authentication is required are indicated by adding a [policy](https://sailsjs.com/documentation/concepts/policies) entry in [config/policies.js](../config/policies.js). Low-level details of implementing authentication are handled by [Passport](http://www.passportjs.org), which lets us pick from hundreds of additional authentication strategies to add if desired.
 
 If authentication is not required, then simply check for the presence of `this.req.authenticated` or `this.req.user` in your actions. Note that `this.req.authenticated` may go away at some point in favor of just checking truthiness of `this.req.user`.
+
+### Authorization
+
+[CASL](https://stalniy.github.io/casl/) is currently used to authorize requests, with abilities defined in [api/middleware/auth.ts](../api/middleware/auth.ts). Eventually these may be moved into their own file.
+
+For now this is just a stub. We seem to be using very granular roles, and I'd like to be sure I understand these before attempting to implement authorization.
