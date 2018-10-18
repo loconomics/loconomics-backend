@@ -29,7 +29,6 @@ export const auth = (req, res, next) => {
     if(user)
       req.user = user
     req.authenticated = !!user
-    req.user = !!user ? user : undefined
     defineAbilitiesFor(user)
     next()
   })(req, res, next);
