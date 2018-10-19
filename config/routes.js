@@ -34,6 +34,7 @@ module.exports.routes = {
   'GET /api/v1/platforms': 'platforms',
   'GET /api/v1/specializations': 'specializations',
   'GET /api/v1/states-provinces': 'states-provinces',
-  'GET /api/v1/test/authentication': 'test/authentication'
+  'GET /api/v1/test/authentication': 'test/authentication',
+  'GET /api/v1/users/:id/profile': 'users/profile'
 
 };

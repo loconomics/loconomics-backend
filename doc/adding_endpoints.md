@@ -50,6 +50,10 @@ Querying by ID, or some other provided field type, is another common API pattern
 
 Notice that the `id` input is marked as required. Inputs can take many forms. They can be provided as query parameters, path components, or form parameters. In this case, the _/postal-codes_ route in _config/routes.js_ specifically indicates a `:id` path component. Other endpoints expect their inputs to be provided as query parameters, and conditionally react based on their presence or absence.
 
+### URL parameters
+
+[api/controllers/users/profile.ts](../api/controllers/users/profile.ts) provides an example of extracting URL parameters.  Sails provides [`req.param`](https://sailsjs.com/documentation/reference/request-req/req-param) which searches the url path, body, and query string of the request (in that order) for the specified parameter.  Specify the URL parameter by name at the route definition in [config/routes.js](../config/routes.js).
+
 ### Multiple input parameters
 
 [api/controllers/specializations.ts](../api/controllers/specializations.ts) is an action with `searchTerm` and `solutionID` inputs passed as query parameters. In this instance, they are both required, but this same pattern can be extended out to many more inputs. Inputs can be optional by omitting `required: true`, and code can conditionally run by checking whether or not the given input is defined.
