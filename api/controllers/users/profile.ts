@@ -42,7 +42,7 @@ module.exports = {
     }
   },
   fn: async function(inputs, exits) {
-    const targetUserId = this.req.param('id')
+    const {id} = inputs
     const requesterUserId = !!this.req.user
       ? this.req.user.UserID
       : -1
@@ -60,9 +60,9 @@ module.exports = {
                 -- User Type
                 ,isProvider as isServiceProfessional
                 ,isCustomer as isClient
-                ,CASE WHEN PC.Active = 1 OR ${targetUserId} = ${requesterUserId} THEN UP.email ELSE null END as Email
-                ,CASE WHEN PC.Active = 1 OR ${targetUserId} = ${requesterUserId} THEN Users.MobilePhone ELSE null END As phone
-                ,CASE WHEN PC.Active = 1 OR ${targetUserId} = ${requesterUserId} THEN providerWebsiteUrl ELSE null END as serviceProfessionalWebsiteUrl
+                ,CASE WHEN PC.Active = 1 OR ${id} = ${requesterUserId} THEN UP.email ELSE null END as Email
+                ,CASE WHEN PC.Active = 1 OR ${id} = ${requesterUserId} THEN Users.MobilePhone ELSE null END As phone
+                ,CASE WHEN PC.Active = 1 OR ${id} = ${requesterUserId} THEN providerWebsiteUrl ELSE null END as serviceProfessionalWebsiteUrl
                 ,providerProfileUrl as serviceProfessionalProfileUrlSlug
                 ,cpa.timeZone as timeZone
                 ,users.isOrganization as isOrganization
@@ -77,15 +77,15 @@ module.exports = {
                     LEFT JOIN
                 ServiceProfessionalClient As PC
                     ON
-                    (   PC.ServiceProfessionalUserID = ${targetUserId} AND PC.ClientUserID = ${requesterUserId}
-                     OR PC.ServiceProfessionalUserID = ${requesterUserId} AND PC.ClientUserID = ${targetUserId} )
+                    (   PC.ServiceProfessionalUserID = ${id} AND PC.ClientUserID = ${requesterUserId}
+                     OR PC.ServiceProfessionalUserID = ${requesterUserId} AND PC.ClientUserID = ${id} )
                     LEFT JOIN
                 CalendarProviderAttributes as cpa
                     ON cpa.UserID = Users.UserID
                     LEFT JOIN
                 userOrganization as org
                     ON org.userID = Users.userID
-            WHERE Users.UserID = ${targetUserId}
+            WHERE Users.UserID = ${id}
                 -- Users must be active (no deleted and publicly active) OR to exist in relationship with the other user (active or not, but with record)
               AND (Users.Active = 1 AND Users.AccountStatusID = 1 OR PC.Active is not null)`)
     const userProfile = profileData.recordset[0]
@@ -98,7 +98,7 @@ module.exports = {
     // Build photo URL
     const lang = this.req.headers['accept-language']
     const updatedSecondPrecision = updatedDate.split('.')[0]
-    const photoUrl = `${baseUrl}/${lang}/Profile/Photo/${targetUserId}?v=${updatedSecondPrecision}`
+    const photoUrl = `${baseUrl}/${lang}/Profile/Photo/${id}?v=${updatedSecondPrecision}`
 
     // Build serviceProfessionalProfileUrl from serviceProfessionalProfileUrlSlug
     const customUrlPrefix = '-'
