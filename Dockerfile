@@ -6,7 +6,8 @@ RUN echo "root:Docker!" | chpasswd
 ADD azure/etc/sshd_config /etc/ssh/
 ADD azure/bin/start.sh /usr/bin/
 RUN chmod +x /usr/bin/start.sh
-WORKDIR /home/node
+RUN mkdir /opt/app
+WORKDIR /opt/app
 COPY package.json yarn.lock ./
 RUN yarn
 COPY ./ ./
