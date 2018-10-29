@@ -6,3 +6,5 @@ Dockerfile*
 terraform.*
 .terraform
 .gitlab-ci.yml
+*.log
+*.sql
