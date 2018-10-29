@@ -7,7 +7,6 @@ variables:
 stages:
   - build
   - publish
-  - deploy
 
 build backend:
   stage: build
@@ -51,25 +50,6 @@ publish staging image:
   - docker push $DOCKER_IMAGE_NAME:staging
   only:
   - staging
-
-.deploy production image:
-  stage: deploy
-  image: microsoft/azure-cli
-  script:
-  - az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
-  - az webapp restart -g app-staging -n loconomics-staging
-  environment:
-    name: production
-    url: https://www.loconomics.com/
-  only:
-  - master
-
-deploy staging image:
-  stage: deploy
-  image: microsoft/azure-cli
-  script:
-  - az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
-  - az webapp restart -g app-staging -n loconomics-staging
   environment:
     name: staging
     url: http://staging.loconomics.com/
