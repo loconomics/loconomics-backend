@@ -8,6 +8,7 @@ ADD azure/bin/start.sh /usr/bin/
 RUN chmod +x /usr/bin/start.sh
 RUN mkdir /opt/app
 WORKDIR /opt/app
+RUN chown -R node.node .
 COPY package.json yarn.lock ./
 RUN yarn
 COPY ./ ./
