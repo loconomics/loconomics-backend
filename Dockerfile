@@ -7,6 +7,7 @@ ADD azure/etc/sshd_config /etc/ssh/
 ADD azure/bin/start.sh /usr/bin/
 RUN chmod +x /usr/bin/start.sh
 RUN mkdir /opt/app
+RUN rm -rf /home/*
 WORKDIR /opt/app
 RUN chown -R node.node .
 COPY package.json yarn.lock ./
