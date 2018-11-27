@@ -96,9 +96,8 @@ module.exports = {
     const updatedDate = new Date(userProfile.updatedDate).toISOString()
 
     // Build photo URL
-    const lang = this.req.headers['accept-language']
     const updatedSecondPrecision = updatedDate.split('.')[0]
-    const photoUrl = `${baseUrl}/${lang}/Profile/Photo/${id}?v=${updatedSecondPrecision}`
+    const photoUrl = `${baseUrl}/${this.req.getLocale()}/Profile/Photo/${id}?v=${updatedSecondPrecision}`
 
     // Build serviceProfessionalProfileUrl from serviceProfessionalProfileUrlSlug
     const customUrlPrefix = '-'

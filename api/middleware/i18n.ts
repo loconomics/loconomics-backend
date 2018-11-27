@@ -4,9 +4,10 @@ export = async (req, res, next) => {
   if(req.path.startsWith('/api/v1')) {
     const parts = req.path.split('/')
     const candidate = parts[3]
-    if(candidate && !req.headers['accept-language'])
-      req.headers['accept-language'] = candidate
-    const split = req.headers['accept-language'].split('-')
+    // Hacky hack to detect language code in path, replace when we standardize on request headers.
+    if(candidate && candidate.length == 5 && candidate[2] == "-")
+      req.setLocale(candidate)
+    const split = rec.getLocale().split('-')
     const languageCode = split[0]
     const countryCode = split[1]
     const sql = await sails.helpers.mssql()
