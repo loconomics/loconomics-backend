@@ -9,13 +9,15 @@
   dependencies:
     sift "^7.0.1"
 
-"@loconomics/data@loconomics/loconomics-data":
+"@loconomics/data@loconomics/loconomics-data#master":
   version "0.0.1"
-  resolved "https://codeload.github.com/loconomics/loconomics-data/tar.gz/6f5e5cc71bb3efad97ccec1dc301810bd38ad5be"
+  resolved "https://codeload.github.com/loconomics/loconomics-data/tar.gz/98d3647520102f20179870b08c040c276dd6034c"
   dependencies:
+    "@types/node" "^10.12.12"
     mssql "^4.3.0"
     reflect-metadata "^0.1.10"
     typeorm "^0.2.9"
+    typescript "^3.2.2"
 
 "@sailshq/connect-redis@^3.2.1":
   version "3.2.1"
