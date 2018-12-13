@@ -18,7 +18,7 @@ services:
       dockerfile: Dockerfile.dev
     environment:
       NODE_ENV: development
-      MSSQLSERVER_URL: mssql://sa:Password!!11@mssqlserver:1433/Dev
+      MSSQLSERVER_URL: mssql://sa:Password!!11@mssqlserver:1433/loconomics
       LOCONOMICS_BACKEND_URL: https://dev.loconomics.com
       PATH: /usr/local/bin:/usr/bin:/bin:/host/node_modules/.bin
     depends_on:
