@@ -11,13 +11,11 @@
 
 "@loconomics/data@loconomics/loconomics-data#master":
   version "0.0.1"
-  resolved "https://codeload.github.com/loconomics/loconomics-data/tar.gz/4038adce23a29929ac662107d8b57c34306fb3ef"
+  resolved "https://codeload.github.com/loconomics/loconomics-data/tar.gz/43bf05e54e2dddbbd894b6a97a5dce44a8315682"
   dependencies:
-    "@types/node" "^10.12.12"
     mssql "^4.3.0"
     reflect-metadata "^0.1.10"
     typeorm "^0.2.9"
-    typescript "^3.2.2"
 
 "@sailshq/connect-redis@^3.2.1":
   version "3.2.1"
@@ -155,7 +153,12 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*", "@types/node@^10.12.12":
+"@types/node@*":
+  version "10.12.15"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.15.tgz#20e85651b62fd86656e57c9c9bc771ab1570bc59"
+  integrity sha512-9kROxduaN98QghwwHmxXO2Xz3MaWf+I1sLVAA6KJDF5xix+IyXVhds0MAfdNwtcpSrzhaTsNB0/jnL86fgUhqA==
+
+"@types/node@^10.12.12":
   version "10.12.14"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.14.tgz#c03b6380c5c301be0499ecd143b99b76ebe45678"
   integrity sha512-0rVcFRhM93kRGAU88ASCjX9Y3FWDCh+33G5Z5evpKOea4xcpLqDGwmo64+DjgaSezTN5j9KdnUzvxhOw7fNciQ==
@@ -1412,6 +1415,11 @@ circular-json@^0.3.1:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.3.tgz#815c99ea84f6809529d2f45791bdf82711352d66"
   integrity sha512-UZK3NBx2Mca+b5LsG7bY183pHWt5Y1xts4P3Pz7ENTwGVnJOUWbRb3ocjvX7hx9tq/yTAdclXm9sZ38gNuem4A==
+
+class-transformer@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/class-transformer/-/class-transformer-0.2.0.tgz#e54b34112e8ef7f913ef938c81fed8ed949fc9c7"
+  integrity sha512-6N/5WkEmLZCKxyC2CAPYQIJt3pDZzDFag7AExpyWRm7CjaS/U62VDRU+Z2AUrQaNpnuiXRlli0so4PJUqGSVZQ==
 
 class-utils@^0.3.5:
   version "0.3.6"
