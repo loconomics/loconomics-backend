@@ -1,3 +1,6 @@
+import {CalendarAvailabilityType} from "@loconomics/data"
+import {serialize} from "class-transformer"
+
 declare var sails: any;
 
 module.exports = {
@@ -14,8 +17,8 @@ module.exports = {
     }
   },
   fn: async function(inputs, exits) {
-    const sql = await sails.helpers.mssql()
-    const data = await sql.query(`select  CalendarAvailabilityTypeID as AvailabilityTypeID, SelectableAs as DisplayName from CalendarAvailabilityType where LanguageID = ${this.req.languageID} and CountryID = ${this.req.countryID}`)
-    return exits.success(data.recordset)
+    const CalendarAvailabilityTypes = await sails.helpers.connection.getRepository(CalendarAvailabilityType)
+    const data = CalendarAvailabilityTypes.find({language: this.req.getLocale()})
+    return exits.success(serialize(data))
   }
 }
