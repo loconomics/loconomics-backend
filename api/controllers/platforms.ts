@@ -1,3 +1,6 @@
+import {Platform} from "@loconomics/data"
+import {serialize} from "class-transformer"
+
 declare var sails: any;
 
 module.exports = {
@@ -9,27 +12,23 @@ module.exports = {
     },
   },
   fn: async function(inputs, exits) {
-    const sql = await sails.helpers.mssql()
-    let data = await sql.query(`
-      select
-        p.platformID,
-        p.languageID,
-        p.countryID,
-        p.name,
-        p.shortDescription,
-        p.longDescription,
-        p.feesDescription,
-        p.positiveAspects,
-        p.negativeAspects,
-        p.advice,
-        p.signUpURL,
-        p.signInURL,
-        p.updatedDate
-      from platform as p
-      where p.LanguageID = ${this.req.languageID}
-        and p.CountryID = ${this.req.countryID}
-    `)
-    data = data.recordset.map((v) => {
+    const Platforms = await sails.helpers.connection.getRepository(Platform)
+    let data = await Platforms.find({
+      select: [
+        "platformID",
+        "name",
+        "shortDescription",
+        "longDescription",
+        "feesDescription",
+        "positiveAspects",
+        "negativeAspects",
+        "advice",
+        "signUpURL",
+        "signInURL",
+        "updatedDate",
+      ]
+    })
+    data = data.map((v) => {
       if(v.positiveAspects)
         v.positiveAspects = JSON.parse(v.positiveAspects)
       if(v.negativeAspects)
@@ -38,6 +37,6 @@ module.exports = {
         v.advice = JSON.parse(v.advice)
       return v
     })
-    return exits.success(data)
+    return exits.success(serialize(data))
   }
 }
