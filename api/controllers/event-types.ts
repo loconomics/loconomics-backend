@@ -1,3 +1,7 @@
+import {CalendarEventType} from "@loconomics/data"
+import {serialize} from "class-transformer"
+import {IsNull, Not} from "typeorm"
+
 declare var sails: any;
 
 module.exports = {
@@ -20,11 +24,11 @@ module.exports = {
     }
   },
   fn: async function(inputs, exits) {
-    const sql = await sails.helpers.mssql()
-    let query = `select EventTypeID, EventType as InternalName, DisplayName from CalendarEventType`
+    const CalendarEventTypes = await sails.helpers.connection.getRepository(CalendarEventType)
+    let query: any = {select: ["EventTypeID", "EventType", "DisplayName"]}
     if(inputs.OnlySelectable)
-      query += ` where DisplayName is not null`
-    const data = await sql.query(query)
-    return exits.success(data.recordset)
+      query.DisplayName = Not(IsNull())
+    const data = await CalendarEventTypes.find(query)
+    return exits.success(serialize(data))
   }
 }
