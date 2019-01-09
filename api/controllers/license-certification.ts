@@ -1,3 +1,6 @@
+import {LicenseCertification} from "@loconomics/data"
+import {serialize} from "class-transformer"
+
 declare var sails: any;
 
 module.exports = {
@@ -19,27 +22,26 @@ module.exports = {
   },
   fn: async function(inputs, exits) {
     const {id} = inputs
-    const sql = await sails.helpers.mssql()
-    let data = await sql.query(`
-      select
-        licenseCertificationID,
-        LicenseCertificationType as name,
-        LicenseCertificationTypeDescription as description,
-        LicenseCertificationAuthority as authority,
-        verificationWebsiteUrl,
-        howToGetLicensedUrl,
-        createdDate,
-        updatedDate,
-        languageID
-      from licensecertification                                 
-      where
-        licensecertificationID = ${id}
-        and languageID = ${this.req.languageID}
-        and active=1
-    `)
-    data = data.recordset
+    const LicenseCertifications = await sails.helpers.connection.getRepository(LicenseCertification)
+    let data = LicenseCertifications.find({
+      select: [
+        "licenseCertificationID",
+        "licenseCertificationType",
+        "LicenseCertificationTypeDescription",
+        "LicenseCertificationAuthority",
+        "verificationWebsiteUrl",
+        "howToGetLicensedUrl",
+        "createdDate",
+        "updatedDate"
+      ],
+      where: {
+        licenseCertificationID: id,
+        active: 1,
+        language: this.req.getLocale()
+      },
+    })
     if(data.length)
-      return exits.success(data)
+      return exits.success(serialize(data))
     return exits.notFound()
   }
 }
