@@ -1,4 +1,3 @@
-import {Connection} from "typeorm"
 import {PostalCode} from "@loconomics/data"
 
 declare var sails: any;
