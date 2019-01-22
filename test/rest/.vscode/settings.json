@@ -1,0 +1,14 @@
+{
+    "rest-client.environmentVariables": {
+        "$shared": {
+            "base": "https://loconomics.com"
+        },
+        "loconomicsDev": {
+            "base": "https://dev.loconomics.com"
+        },
+        "loconomicsStaging": {
+            "base": "https://staging.loconomics.com"
+        }
+    },
+    "rest-client.rememberCookiesForSubsequentRequests": false
+}

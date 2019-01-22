@@ -1,0 +1,74 @@
+@apiBase = {{base}}/api/v1/en-US
+
+@userID = {{login.response.body.$.userID}}
+
+@token = {{login.response.body.$.authToken}}
+
+# @name login
+POST {{apiBase}}/auth/login HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+username={{username}}&password={{password}}&returnProfile=false
+
+###
+GET {{apiBase}}/availability-types HTTP/1.1
+
+###
+GET {{apiBase}}/event-types HTTP/1.1
+
+###
+GET {{apiBase}}/event-types?onlySelectable=false HTTP/1.1
+
+###
+GET {{apiBase}}/event-types?onlySelectable=true HTTP/1.1
+
+###
+GET {{apiBase}}/job-title-service-attributes/106 HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+GET {{apiBase}}/license-certification/64 HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+GET {{apiBase}}/platforms HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+GET {{apiBase}}/postal-codes/90001 HTTP/1.1
+
+###
+GET {{apiBase}}/posting-templates/1 HTTP/1.1
+
+###
+GET {{apiBase}}/pricing-types HTTP/1.1
+
+###
+GET {{apiBase}}/pricing-types/1 HTTP/1.1
+
+###
+GET {{apiBase}}/pricing-types/job-title/106 HTTP/1.1
+
+###
+GET {{apiBase}}/solutions HTTP/1.1
+
+###
+GET {{apiBase}}/solutions?searchTerm=massage HTTP/1.1
+
+###
+GET {{apiBase}}/solutions/153 HTTP/1.1
+
+###
+GET {{apiBase}}/specializations HTTP/1.1
+
+###
+GET {{apiBase}}/specializations?searchTerm=massage HTTP/1.1
+
+###
+GET {{apiBase}}/specializations?solutionID=153 HTTP/1.1
+
+###
+GET {{apiBase}}/states-provinces HTTP/1.1
+
+###
+GET {{apiBase}}/users/{{userID}}/profile HTTP/1.1
