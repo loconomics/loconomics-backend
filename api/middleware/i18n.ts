@@ -6,7 +6,7 @@ export = async (req, res, next) => {
     const parts = req.path.split('/')
     const candidate = parts[3]
     if(candidate && candidate.length == 5 && candidate[2] == "-")
-      req.setLocale(candidate)
+      req.headers["accept-language"] = candidate
     const newPath = parts.slice(0, 3).concat(parts.slice(4)).join('/')
     req.url = newPath
     return next()
