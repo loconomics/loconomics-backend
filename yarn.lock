@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@casl/ability@^2.5.1":
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-2.5.1.tgz#53f12af45295793472c65b539204226372904594"
-  integrity sha512-Ju1cl1R4xgPiiYxmjUAoO+rhNxp0ximyKZzWuw4/DLKHnbQNqbSVyDkRSVHuAuL+BWyeBsaD/sVSwxUitYlDyA==
+"@casl/ability@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-3.0.0.tgz#57b9a3660f204491e68d9a14b54e4a4af27769e6"
+  integrity sha512-ZGzZPgFxK/CYed7F6ksxX/dQfBHtBoRGM5xMBhDc/mVvmGepBLYq/YLbnY3KR2GL+xmSlOb8Hmd1tsrUROqs7Q==
   dependencies:
     sift "^7.0.1"
 
@@ -14,7 +14,6 @@
   resolved "https://codeload.github.com/loconomics/loconomics-data/tar.gz/5faae50217cf2fa45c14ff24582aeb8eac5e4232"
   dependencies:
     "@types/node" "^10.12.12"
-    class-transformer "^0.2.0"
     mssql "^4.3.0"
     reflect-metadata "^0.1.10"
     typeorm "^0.2.9"
@@ -160,10 +159,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.21.tgz#7e8a0c34cf29f4e17a36e9bd0ea72d45ba03908e"
   integrity sha512-CBgLNk4o3XMnqMc0rhb6lc77IwShMEglz05deDcn2lQxyXEZivfwgYJu7SMha9V5XcrP6qZuevTHV/QrN2vjKQ==
 
-"@types/passport@^0.4.7":
-  version "0.4.7"
-  resolved "https://registry.yarnpkg.com/@types/passport/-/passport-0.4.7.tgz#2b7f29bf61df91cf77023b3777e940b613d4b4d8"
-  integrity sha512-EePlxNYx5tf3n0yjdPXX0/zDOv0UCwjMyQo4UkWGlhHteNDItAj7TfDdLttSThVMKQz3uCW7lsGzMuml0f8g9Q==
+"@types/passport@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/passport/-/passport-1.0.0.tgz#747fa127a747a145ff279f3df3e07c425e5ff297"
+  integrity sha512-R2FXqM+AgsMIym0PuKj08Ybx+GR6d2rU3b1/8OcHolJ+4ga2pRPX105wboV6hq1AJvMo2frQzYKdqXS5+4cyMw==
   dependencies:
     "@types/express" "*"
 

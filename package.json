@@ -5,7 +5,7 @@
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
-    "@casl/ability": "^2.5.1",
+    "@casl/ability": "^3.0.0",
     "@loconomics/data": "loconomics/loconomics-data#master",
     "@sailshq/connect-redis": "^3.2.1",
     "@sailshq/lodash": "^3.10.3",
@@ -14,7 +14,7 @@
     "@types/http-proxy": "^1.16.2",
     "@types/mssql": "^4.0.11",
     "@types/node": "^10.12.12",
-    "@types/passport": "^0.4.7",
+    "@types/passport": "^1.0.0",
     "async": "^2.6.1",
     "class-transformer": "^0.2.0",
     "grunt": "^1.0.3",
