@@ -1,5 +1,6 @@
 import {CalendarAvailabilityType} from "@loconomics/data"
 import {serialize} from "class-transformer"
+import {IsNull, Not} from "typeorm"
 
 declare var sails: any;
 
@@ -17,8 +18,12 @@ module.exports = {
     }
   },
   fn: async function(inputs, exits) {
-    const CalendarAvailabilityTypes = await sails.helpers.connection.getRepository(CalendarAvailabilityType)
-    const data = CalendarAvailabilityTypes.find({language: this.req.getLocale()})
+    const connection = await sails.helpers.connection()
+    const CalendarAvailabilityTypes = await connection.getRepository(CalendarAvailabilityType)
+    const data = await CalendarAvailabilityTypes.find({
+      language: this.req.getLocale(),
+      selectableAs: Not(IsNull()),
+    })
     return exits.success(serialize(data))
   }
 }
