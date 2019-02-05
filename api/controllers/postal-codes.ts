@@ -25,12 +25,13 @@ module.exports = {
   },
   fn: async function(inputs, exits) {
     const {id} = inputs
-    const PostalCodes = await sails.helpers.connection.getRepository(PostalCode)
-    const postalCode = PostalCodes.findOne(id)
+    const connection = await sails.helpers.connection()
+    const PostalCodes = connection.getRepository(PostalCode)
+    const postalCode = await PostalCodes.findOne({postalCode: id})
     if(!postalCode)
       return exits.notFound({errorMessage: "Postal Code Not Valid."})
     const stateProvince = await postalCode.stateProvince
-    const record = {city: postalCode.City, stateProvinceName: stateProvince.StateProvinceName, stateProvinceCode: stateProvince.StateProvinceCode}
+    const record = {city: postalCode.city, stateProvinceName: stateProvince.stateProvinceName, stateProvinceCode: stateProvince.stateProvinceCode}
     return exits.success(record)
   }
 }
