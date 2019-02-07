@@ -24,10 +24,11 @@ module.exports = {
     }
   },
   fn: async function(inputs, exits) {
-    const CalendarEventTypes = await sails.helpers.connection.getRepository(CalendarEventType)
-    let query: any = {select: ["EventTypeID", "EventType", "DisplayName"]}
+    const connection = await sails.helpers.connection()
+    const CalendarEventTypes = await connection.getRepository(CalendarEventType)
+    let query: any = {select: ["eventTypeId", "eventType", "displayName"]}
     if(inputs.OnlySelectable)
-      query.DisplayName = Not(IsNull())
+      query.where = {displayName: Not(IsNull())}
     const data = await CalendarEventTypes.find(query)
     return exits.success(serialize(data))
   }
