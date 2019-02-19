@@ -22,20 +22,21 @@ module.exports = {
   },
   fn: async function(inputs, exits) {
     const {id} = inputs
-    const LicenseCertifications = await sails.helpers.connection.getRepository(LicenseCertification)
-    let data = LicenseCertifications.find({
+    const connection = await sails.helpers.connection()
+    const LicenseCertifications = await connection.getRepository(LicenseCertification)
+    let data = await LicenseCertifications.find({
       select: [
-        "licenseCertificationID",
+        "licenseCertificationId",
         "licenseCertificationType",
-        "LicenseCertificationTypeDescription",
-        "LicenseCertificationAuthority",
+        "licenseCertificationTypeDescription",
+        "licenseCertificationAuthority",
         "verificationWebsiteUrl",
         "howToGetLicensedUrl",
         "createdDate",
         "updatedDate"
       ],
       where: {
-        licenseCertificationID: id,
+        licenseCertificationId: id,
         active: 1,
         language: this.req.getLocale()
       },
