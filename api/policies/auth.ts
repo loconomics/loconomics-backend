@@ -8,7 +8,7 @@ export = (req, res, next) => {
     return next()
   const base = `/${req.getLocale()}/rest/`
   return res.unauthorized({
-    requiredLevel,
+    requiredLevel: requiredRoles,
     login: `${base}login`,
     signup: `${base}signup`
   })
