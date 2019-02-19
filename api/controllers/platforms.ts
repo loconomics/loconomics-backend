@@ -12,10 +12,11 @@ module.exports = {
     },
   },
   fn: async function(inputs, exits) {
-    const Platforms = await sails.helpers.connection.getRepository(Platform)
+    const connection = await sails.helpers.connection()
+    const Platforms = await connection.getRepository(Platform)
     let data = await Platforms.find({
       select: [
-        "platformID",
+        "platformId",
         "name",
         "shortDescription",
         "longDescription",
@@ -23,8 +24,8 @@ module.exports = {
         "positiveAspects",
         "negativeAspects",
         "advice",
-        "signUpURL",
-        "signInURL",
+        "signUpUrl",
+        "signInUrl",
         "updatedDate",
       ]
     })
