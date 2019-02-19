@@ -66,10 +66,12 @@ Logging in/out, account management, etc. is presently handled in the current bac
 
 [api/controllers/test/authentication.ts](../api/controllers/test/authentication.ts) demonstrates accessing the authenticated user from within an action. Actions where authentication is required are indicated by adding a [policy](https://sailsjs.com/documentation/concepts/policies) entry in [config/policies.js](../config/policies.js) to the [auth policy](../api/policies/auth.ts) which handles both authentication and authorization.
 
-To require a certain authorization level on a given action, set its `requiredLevel` field. See xxx for an example of this.
-
 Low-level details of implementing authentication are handled by [Passport](http://www.passportjs.org), which lets us pick from hundreds of additional authentication strategies to add if desired.
 
-If authentication is not required, then simply check for the presence of `this.req.authenticated` or `this.req.user` in your actions. Note that `this.req.authenticated` may go away at some point in favor of just checking truthiness of `this.req.user`.
+If authentication is optional for an action, then simply check for the presence of `this.req.authenticated` or `this.req.user` in your actions. Note that `this.req.authenticated` may go away at some point in favor of just checking truthiness of `this.req.user`.
+
+### Authorization
+
+To require specific roles for a given action, set its `requiredRoles` field. See xxx for an example of this.
 
 
