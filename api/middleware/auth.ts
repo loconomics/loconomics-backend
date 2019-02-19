@@ -14,7 +14,6 @@ passport.use(new BearerStrategy(
     if(!authorization)
       return done(null, false)
     const user = await Users.findOne({userId: authorization.userId})
-    console.log(user)
     if(user)
       return done(null, user)
     return done(null, false)
@@ -23,8 +22,24 @@ passport.use(new BearerStrategy(
 
 export const auth = (req, res, next) => {
   passport.authenticate('bearer', (err, user, info) => {
-    if(user)
+    if(user) {
       req.user = user
+      req.roles = []
+      if(req.user.isProvider)
+        req.roles.push("provider")
+      if(req.user.isCustomer)
+        req.roles.push("customer")
+      if(req.user.isAdmin)
+        req.roles.push("admin")
+      if(req.user.isCollaborator)
+        req.roles.push("collaborator")
+      if(req.user.isHipaaAdmin)
+        req.roles.push("hipaaAdmin")
+      if(req.user.isContributor)
+        req.roles.push("contributor")
+      if(req.user.isOrganization)
+        req.roles.push("organization")
+    }
     req.authenticated = !!user
     next()
   })(req, res, next);
