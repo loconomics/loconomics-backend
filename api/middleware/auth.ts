@@ -1,4 +1,5 @@
-import { AbilityBuilder } from '@casl/ability'
+import {Authorization, User} from "@loconomics/data"
+
 import BearerStrategy = require('passport-http-bearer')
 import passport = require('passport')
 
@@ -6,13 +7,13 @@ declare var sails: any;
 
 passport.use(new BearerStrategy(
   async (token, done) => {
-    const sql = await sails.helpers.mssql()
-    let authorization = await sql.query(`select * from authorizations where token = '${token}'`)
-    authorization = authorization.recordset[0]
+    const connection = await sails.helpers.connection()
+    const Authorizations = await connection.getRepository(Authorization)
+    const Users = await connection.getRepository(User)
+    const authorization = await Authorizations.findOne({token: token})
     if(!authorization)
       return done(null, false)
-    let user = await sql.query(`select * from users where UserId = '${authorization.UserID}'`)
-    user = user.recordset[0]
+    const user = await Users.findOne({userId: authorization.userId})
     console.log(user)
     if(user)
       return done(null, user)
@@ -20,16 +21,11 @@ passport.use(new BearerStrategy(
   },
 ))
 
-const defineAbilitiesFor = (user) => AbilityBuilder.define((allow, forbid) => {
-  // Create rules as per https://stalniy.github.io/casl/abilities/2017/07/20/define-abilities.html.
-})
-
 export const auth = (req, res, next) => {
   passport.authenticate('bearer', (err, user, info) => {
     if(user)
       req.user = user
     req.authenticated = !!user
-    defineAbilitiesFor(user)
     next()
   })(req, res, next);
 }
