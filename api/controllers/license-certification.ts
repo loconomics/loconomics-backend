@@ -1,4 +1,4 @@
-import {LicenseCertification} from "@loconomics/data"
+import {LicenseCertification, getRepository} from "@loconomics/data"
 import {serialize} from "class-transformer"
 
 declare var sails: any;
@@ -22,8 +22,7 @@ module.exports = {
   },
   fn: async function(inputs, exits) {
     const {id} = inputs
-    const connection = await sails.helpers.connection()
-    const LicenseCertifications = await connection.getRepository(LicenseCertification)
+    const LicenseCertifications = await getRepository(LicenseCertification)
     let data = await LicenseCertifications.find({
       select: [
         "licenseCertificationId",

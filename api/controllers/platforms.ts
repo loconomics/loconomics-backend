@@ -1,4 +1,4 @@
-import {Platform} from "@loconomics/data"
+import {Platform, getRepository} from "@loconomics/data"
 import {serialize} from "class-transformer"
 
 declare var sails: any;
@@ -12,8 +12,7 @@ module.exports = {
     },
   },
   fn: async function(inputs, exits) {
-    const connection = await sails.helpers.connection()
-    const Platforms = await connection.getRepository(Platform)
+    const Platforms = await getRepository(Platform)
     let data = await Platforms.find({
       select: [
         "platformId",

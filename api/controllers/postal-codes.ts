@@ -1,4 +1,4 @@
-import {PostalCode} from "@loconomics/data"
+import {PostalCode, getRepository} from "@loconomics/data"
 
 declare var sails: any;
 
@@ -25,8 +25,7 @@ module.exports = {
   },
   fn: async function(inputs, exits) {
     const {id} = inputs
-    const connection = await sails.helpers.connection()
-    const PostalCodes = connection.getRepository(PostalCode)
+    const PostalCodes = await getRepository(PostalCode)
     const postalCode = await PostalCodes.findOne({postalCode: id})
     if(!postalCode)
       return exits.notFound({errorMessage: "Postal Code Not Valid."})
