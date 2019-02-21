@@ -19,8 +19,8 @@ module.exports.policies = {
 
   // '*': true,
 
-  'license-certification': 'authenticated',
-  'platforms': 'authenticated',
-  'test/authentication': 'authenticated'
+  'license-certification': 'auth',
+  'platforms': 'auth',
+  'test/authentication': 'auth'
 
 };
