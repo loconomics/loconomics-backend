@@ -74,4 +74,48 @@ If authentication is optional for an action, then simply check for the presence 
 
 To require specific roles for a given action, set its `requiredRoles` field. See xxx for an example of this.
 
+## Gotchas
 
+### web_1          |   Object literal may only specify known properties, and 'select' does not exist in type 'FindConditions<Specialization>'.
+
+Say you're working on an endpoint and get an error like this:
+
+```
+web_1          |   Object literal may only specify known properties, and 'select' does not exist in type 'FindConditions<Specialization>'.
+```
+
+You have code like:
+
+```
+    const data = await Specializations.find({
+      select: [
+        "specializationID",
+        "name"
+      ],
+      where: {
+        name: Like(searchTerm),
+        language: this.req.getLocale(),
+      },
+      take: 20,
+      order: {
+        displayRank: "ASC",
+        name: "ASC"
+      }
+    })
+```
+
+The error message suggests that `select` is an invalid key, but the docs and other code examples clearly state that it is.
+
+The issue isn't `select`, but the fields being selected. In particular:
+
+```
+        "specializationID",
+```
+
+should be:
+
+```
+        "specializationId",
+```
+
+The error message misleads. It actually refers to the fields in the `select`, not to `select` itself. This can presumably happen with other TypeORM fields as well.
