@@ -6,7 +6,6 @@
   "keywords": [],
   "dependencies": {
     "@casl/ability": "^3.0.0",
-    "@loconomics/data": "loconomics/loconomics-data#master",
     "@sailshq/connect-redis": "^3.2.1",
     "@sailshq/lodash": "^3.10.3",
     "@sailshq/socket.io-redis": "^5.2.0",
@@ -29,6 +28,8 @@
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^1.5.5",
     "ts-node": "^8.0.2",
+    "tsconfig-paths": "^3.8.0",
+    "typeorm": "^0.2.13",
     "typescript": "^3.2.2"
   },
   "devDependencies": {
@@ -37,7 +38,7 @@
   },
   "scripts": {
     "start": "NODE_ENV=production node app.js",
-    "dev": "nodemon -e js,ts app.js -w api/ -w config/",
+    "dev": "nodemon -e js,ts app.js -w api/ -w config/ -w data/",
     "test": "npm run lint && npm run custom-tests && echo 'Done.'",
     "lint": "eslint . --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
     "custom-tests": "echo \"(No other custom tests yet.)\" && echo",

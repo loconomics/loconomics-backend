@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@loconomics/data": ["data/src"]
+    },
     "lib": [
       "es5",
       "es6"

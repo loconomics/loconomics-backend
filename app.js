@@ -22,6 +22,7 @@
 
 require("reflect-metadata")
 require('ts-node/register');
+require('tsconfig-paths/register');
 
 // Ensure we're in the project directory, so cwd-relative paths work as expected
 // no matter where we actually lift from.
