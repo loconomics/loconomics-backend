@@ -20,6 +20,8 @@ module.exports.custom = {
   // stripeSecret: 'sk_test_Zzd814nldl91104qor5911gjald',
   // …
 
-  mssqlServerURL: process.env.MSSQLSERVER_URL
+  mssqlServerURL: process.env.MSSQLSERVER_URL,
+
+  countryID: 1
 
 };

@@ -11,7 +11,7 @@
 
 "@loconomics/data@loconomics/loconomics-data#master":
   version "0.0.1"
-  resolved "https://codeload.github.com/loconomics/loconomics-data/tar.gz/bac26a653977fca4d81c5d45cbc27ccec474b5d7"
+  resolved "https://codeload.github.com/loconomics/loconomics-data/tar.gz/258819b9f48a601b3de5ebd768f9cc35d7dacc4d"
   dependencies:
     "@types/node" "^10.12.12"
     class-transformer "^0.2.0"

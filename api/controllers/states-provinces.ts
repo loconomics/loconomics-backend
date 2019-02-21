@@ -1,3 +1,6 @@
+import {StateProvince, getRepository} from "@loconomics/data"
+import {serialize} from "class-transformer"
+
 declare var sails: any;
 
 module.exports = {
@@ -12,8 +15,11 @@ module.exports = {
     }
   },
   fn: async function(inputs, exits) {
-    const sql = await sails.helpers.mssql()
-    const data = await sql.query(`select StateProvinceName as name, StateProvinceCode as code from stateprovince where CountryID = ${this.req.countryID}`)
-    return exits.success(data.recordset)
+    const StatesProvinces = await getRepository(StateProvince)
+    const data = await StatesProvinces.find({
+      select: ["stateProvinceName", "stateProvinceCode"],
+      where: {countryId: sails.config.custom.countryID}
+    })
+    return exits.success(serialize(data))
   }
 }
