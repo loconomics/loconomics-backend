@@ -1,3 +1,6 @@
+import {PostingTemplate, getRepository} from "@loconomics/data"
+import {serialize} from "class-transformer"
+
 declare var sails: any;
 
 module.exports = {
@@ -19,38 +22,44 @@ module.exports = {
   },
   fn: async function(inputs, exits) {
     const {id} = inputs
-    const sql = await sails.helpers.mssql()
-    let data = await sql.query(`
-      select
-        p.postingTemplateID,
-        p.name,
-        p.createdDate,
-        p.updatedDate,
-        p.modifiedBy
-      from PostingTemplate as P
-      where P.postingTemplateID = ${id}
-        and P.languageID = ${this.req.languageID}
-        and P.countryID = ${this.req.countryID}
-    `)
-    data = data.recordset[0]
+    const PostingTemplates = await getRepository(PostingTemplate)
+    let data: any = await PostingTemplates.findOne({
+      select: [
+        "postingTemplateId",
+        "name",
+        "createdDate",
+        "updatedDate",
+        "modifiedBy"
+      ],
+      relations: [
+        "postingTemplateQuestions",
+        "postingTemplateQuestions.question",
+      ],
+      where: {
+        postingTemplateId: id,
+        language: this.req.getLocale()
+      }
+    })
     if(!data)
       return exits.notFound()
-    const questions = await sql.query(`
-      select
-        Q.questionID,
-        Q.questionTypeID,
-        Q.question,
-        Q.label,
-        Q.helpBlock,
-        Q.options,
-        P.legend,
-        P.branchLogic
-      FROM Question as Q
-        INNER JOIN postingTemplateQuestion as P
-        ON Q.questionID = P.questionID
-      WHERE P.postingTemplateID = ${id}
-    `)
-    data.questions = questions.recordset
-    return exits.success(data)
+    const questions = await data.postingTemplateQuestions
+    data.questions = await Promise.all(questions.map(async (p) => {
+      const question = await p.question
+      console.log("Question", question)
+      const questionType = await question.questionType
+      console.log("type", questionType)
+      return {
+        questionID: question.questionId,
+        questionTypeID: questionType.questionTypeId,
+        question: question.question,
+        label: question.label,
+        helpBlock: question.helpBlock,
+        options: JSON.parse(question.options),
+        legend: p.legend,
+        branchLogic: JSON.parse(p.branchLogic)
+      }
+    }))
+    delete data.__postingTemplateQuestions__
+    return exits.success(serialize(data))
   }
 }
