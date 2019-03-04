@@ -2,9 +2,9 @@
 
 Loconomics uses [Sails](https://sailsjs.com) for its web framework. Much of the application code is written in [TypeScript](http://www.typescriptlang.org/) which offers some type-safety when working with lower-level libraries.
 
-All of these technologies are heavily documented. My goal here is to get folks up and running migrating endpoints to this new backend quickly while providing links to the relevant documentation for any needed clarification.
+All of these technologies are heavily documented. My goal here is to get folks up and running migrating endpoints to this new backend quickly while providing links to the relevant documentation for any needed clarification. I'll also link to particular patterns within the code that may prove helpful.
 
-Note that, throughout this document, the phrase _current backend_ refers to the .net code found [here](https://github.com/loconomics/loconomics/tree/master/web). This repository is referred to as the _new backend_.
+Note that, throughout this document, the phrase _current backend_ refers to the .net code found [here](https://github.com/loconomics/loconomics/tree/master/web). _This_ repository is referred to as the _new backend_.
 
 ## Request Flow
 
@@ -14,31 +14,31 @@ Broadly speaking, this is how the new backend works:
 2. The request hits (api/middleware/i18n.ts)[../api/middleware/i18n.ts]. This checks to see if the third path component looks like a [RFC 4646](https://www.ietf.org/rfc/rfc4646.txt) language code. If it does, the code is removed from the path and stashed in the request's _accept-language_ header.
 3. The request then hits [Sails' i18n middleware](https://sailsjs.com/documentation/concepts/internationalization) which, among other things, parses the _accept-language_ header and makes it available via `req.getLocale()`.
 4. The request then reaches Sails' router. If it matches a route in the new backend, it is processed immediately and the results are returned.
-5. If no route in the new backend matches, [api/middleware/proxy.ts](../api/middleware/proxy.ts) proxies the request to a server running the current backend. By default this is _https://loconomics.com_, but _https://dev.loconomics.com_ is a good choice for development.
+5. If no route in the new backend matches, [api/middleware/proxy.ts](../api/middleware/proxy.ts) proxies the request to a server running the current backend. By default this is _https://loconomics.com_, but _https://dev.loconomics.com_ is a good choice for development. Select a Loconomics backend to which requests should proxy by setting the _LOCONOMICS_BACKEND_URL_ environment variable.
 
 ## Database access
 
 Sails includes an ORM, and while you'll see it referenced throughout its documentation, we aren't using it. Instead, we're using the [@loconomics/data](https://github.com/loconomics/loconomics-data) package, because Sails' third-party MSSQL adapter is outdated. @loconomics/data wraps [TypeORM](https://typeorm.io), so see its documentation or our existing code to learn how to use it.
 
+While @loconomics/data is developed as a separate package, it is linked into the new backend via Git submodules at [data/](../data/). It may eventually make sense to eliminiate this distinction at some point, but for now is done this way to give each distinct repository a well-defined scope. Eventually @loconomics/data and its migrations should be the single source of truth on the schema, but for now that work remains unfinished.
+
 ## Writing the code
 
 Start by implementing the endpoint logic. In the new backend, make a file at _api/controllers/my-new-endpoint.ts_. This file is your [Sails action](https://sailsjs.com/documentation/concepts/actions-and-controllers) and uses a format called [node-machine](http://node-machine.org/). We'll dive into some common action patterns below.
 
-Then, find the code to be ported in the current backend. [This directory](https://github.com/loconomics/loconomics/tree/master/web/api/v1) contains the logic for mapping requests to responses, while [this directory](https://github.com/loconomics/loconomics/tree/master/web/App_Code) contains additional logic used by the _.cshtml_ files.
+Then, find the code to be ported in the current backend. [This directory](https://github.com/loconomics/loconomics/tree/master/web/api/v1) contains the logic for mapping requests to responses, while [this directory](https://github.com/loconomics/loconomics/tree/master/web/App_Code) contains additional logic used by the _.cshtml_ files. In particular, the [LcRest directory](https://github.com/loconomics/loconomics/tree/master/web/App_Code/LcRest) maps database/C# objects back to JSON.
 
-Note that, to keep things simple, I'm recommending that we keep the logic near the endpoint in the new backend. That is, we'll keep the query and parsing logic together in the action, only splitting it up if we find ourselves using the same logic in 3 or more places. See later sections of this document for common action patterns and examples.
+Note that, to keep things simple, I'm recommending that we keep the logic near the endpoint in the new backend. That is, we'll keep the query and parsing logic together in the action, only splitting it up if we find ourselves using the same logic in 3 or more places. See later sections of this document for common action patterns and examples. If code needs to be separated out, place it in a [helper](https://sailsjs.com/documentation/anatomy/api/helpers).
 
 ## Setting up routing
 
 Once your action is written, you'll need to add it to _config/routes.js_. See [this documentation](https://sailsjs.com/documentation/concepts/actions-and-controllers/routing-to-actions) for more details. For compatibility with the current backend, please use routes of the form _/api/v1/path/to/action_. Do not include the language code in the Sails route definition.
 
-Also, please keep routes in alphabetical order to make finding specific endpoints easier.
+Also, please keep routes in alphabetical order to make it easier to determine if a given endpoint has been ported.
 
 ## Abstracting functionality
 
 If we find ourselves using functionality in 3 or more places, we should move it to a [helper](https://sailsjs.com/documentation/concepts/helpers). Helpers also use the node-machine format, and are globally accessible via `sails.helpers.helperName`.
-
-An example of a good helper is [connection.ts](../api/helpers/connection.ts), which allocates a database connection. If we find ourselves reusing query logic in several places, we may want to create namespaced helpers to use the query in multiple actions.
 
 ## Common patterns with examples
 
@@ -60,6 +60,15 @@ Notice that the `id` input is marked as required. Inputs can take many forms. Th
 
 The current backend handles multi-level URLs in a single endpoint, however this can be difficult to reason about. By contrast, the new backend places actions in directory hierarchies based on their URL structure, adding a specific route in _config/routes.js_ to each action.
 
+### Complex JSON Munging
+
+The current backend seems to slurp in data from various records and return it in shapes that don't necessarily resemble the originating tables. We're also storing JSON as strings. There's no easy way to extract useful patterns for handling these cases, but check out [api/controllers/posting-templates.ts](../api/controllers/posting-templates.ts) for an endpoint that:
+ * Performs a complex database query with joins to relations
+ * Parses JSON strings
+ * Iterates through the results and reshapes the data, in some cases waiting on async promises
+
+Again, if we don't need the same parsing logic multiple times, let's keep it in the same file as the endpoint. Since the code itself is the API specification, chasing values through multiple files to determine what that should look like is very difficult.
+
 ### Authentication
 
 Logging in/out, account management, etc. is presently handled in the current backend, but the new backend needs access to this status. As such, the current backend provisions a UUID token to authenticated users, which the frontend treats as a bearer token. The new backend looks up the user by token and populates `this.req.user` and `this.req.authenticated`.
@@ -76,7 +85,7 @@ To require specific roles for a given action, set its `requiredRoles` field. See
 
 ## Gotchas
 
-### web_1          |   Object literal may only specify known properties, and 'select' does not exist in type 'FindConditions<Specialization>'.
+### Object literal may only specify known properties, and 'select' does not exist in type 'x'.
 
 Say you're working on an endpoint and get an error like this:
 
@@ -119,3 +128,19 @@ should be:
 ```
 
 The error message misleads. It actually refers to the fields in the `select`, not to `select` itself. This can presumably happen with other TypeORM fields as well.
+
+## Testing
+
+There isn't a system for API tests, but since I needed some way to quickly run and test requests against local and remote instances, I created [this pile of shell scripts](../test/rest). [HTTPIe](https://httpie.org) is required to run these. Each script is named for a given route, and runs against https://dev.loconomics.com by default. To run a script against your local instance, use something like:
+
+```bash
+$ BASE=http://localhost:1337 ./postal-codes.sh
+```
+
+These scripts also include default parameters that should return sensible data, but can optionally be overridden. You could run the above script like s to get another postal codeo:
+
+```bash
+$ BASE=http://localhost:1337 ID=90002 ./postal-codes.sh
+```
+
+When porting a new endpoint, please copy and modify an existing script. The code from the current backend often includes request parameters that return useful sample data. Please also respect the API path structure by creating scripts in directories that match the remote routes as closely as possible.
