@@ -12,6 +12,14 @@ Future versions of this backend may relax these requirements somewhat, but for n
 
 ## Setup
 
+Note that this repository uses a Git submodule for the ORM. To get this submodule, either clone this repository with the `--recursive` option or run the following commands:
+
+```bash
+$ git submodule init
+$ git submodule update
+```
+
+
 ### Development
 
 FOr the moment, [Docker](https://www.docker.com) is the only supported development environment. Nothing about the backend is Docker-specific, so avoiding Docker is entirely possible but beyond the scope of this documentation. To set up a development environment:
