@@ -1,4 +1,4 @@
-import {Authorization, User} from "@loconomics/data"
+import {Authorization, User, getRepository} from "@loconomics/data"
 
 import BearerStrategy = require('passport-http-bearer')
 import passport = require('passport')
@@ -7,9 +7,8 @@ declare var sails: any;
 
 passport.use(new BearerStrategy(
   async (token, done) => {
-    const connection = await sails.helpers.connection()
-    const Authorizations = await connection.getRepository(Authorization)
-    const Users = await connection.getRepository(User)
+    const Authorizations = await getRepository(Authorization)
+    const Users = await getRepository(User)
     const authorization = await Authorizations.findOne({token: token})
     if(!authorization)
       return done(null, false)
