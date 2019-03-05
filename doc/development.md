@@ -82,6 +82,19 @@ Notice that the `id` input is marked as required. Inputs can take many forms. Th
 
 The current backend handles multi-level URLs in a single endpoint, however this can be difficult to reason about. By contrast, the new backend places actions in directory hierarchies based on their URL structure, adding a specific route in _config/routes.js_ to each action.
 
+### Simple JSON Transformations
+
+The API doesn't always return values named after their database columns. Furthermore, sometimes values are only accessible behind promises, and non-primitives don't serialize to JSON at all. You also may wish to hide sensitive variables on models.
+
+The new backend uses [Class-transformer](https://github.com/typestack/class-transformer) to both serialize objects to JSON, and to rename or hide values in the returned data. Class-transformer has several robust strategies for easily serializing your class to whatever JSON-based format you want:
+
+ * Hide all class members, only whitelisting a few.
+ * Exposing all class members, selectively hiding a few.
+ * Exposing a given class member under a different name.
+ * Serializing a given method or getter's return value.
+
+Unfortunately, it appears that these decorators are all-or-nothing. That is, you can specify very exactly how a given class should be represented, but you can't customize that representation for other scenarios. Personally, I think each class should have a canonical representation that is returned by all endpoints. If there are inconsistencies between how models are represented in different routes, those inconsistencies will probably come back to bite you in inconvenient ways.
+
 ### Complex JSON Munging
 
 The current backend seems to slurp in data from various records and return it in shapes that don't necessarily resemble the originating tables. We're also storing JSON as strings. There's no easy way to extract useful patterns for handling these cases, but check out [api/controllers/posting-templates.ts](../api/controllers/posting-templates.ts) for an endpoint that:
