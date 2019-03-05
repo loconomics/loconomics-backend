@@ -197,4 +197,6 @@ These scripts also include default parameters that should return sensible data, 
 $ BASE=http://localhost:1337 ID=90002 ./postal-codes.sh
 ```
 
+In cases where authentication is required, set the `TOKEN` environment variable from an authentication token retrieved as documented above. See [test/rest/platforms.sh](../test/rest/platforms.sh) for an example of how to write an API script against an authenticated endpoint.
+
 When porting a new endpoint, please copy and modify an existing script. The code from the current backend often includes request parameters that return useful sample data. Please also respect the API path structure by creating scripts in directories that match the remote routes as closely as possible.
