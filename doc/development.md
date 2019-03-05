@@ -6,6 +6,28 @@ All of these technologies are heavily documented. My goal here is to get folks u
 
 Note that, throughout this document, the phrase _current backend_ refers to the .net code found [here](https://github.com/loconomics/loconomics/tree/master/web). _This_ repository is referred to as the _new backend_.
 
+## Getting Data
+
+While we have scripts to create a database from scratch, we don't yet have a mechanism to seed a new database. As such, the best way to get up and running is to get a database snapshot from dev.loconomics.com. You'll either need the username and password for the development database, or an SQL dump from someone who has these credentials.
+
+### Dumping the Database
+
+If you have access to the dev.loconomics.com database, you can obtain a database dump as follows. Note that this assumes you have [mssql-scripter](https://github.com/Microsoft/mssql-scripter) installed:
+
+```bash
+$ mssql-scripter -U <database user> -P <database password> -S dev-loconomics.database.windows.net -d Dev --schema-and-data --target-server-version AzureDB >dev.sql
+```
+
+### Loading the Dump
+
+Assuming you've made or received a database dump, load it into your server instance like so:
+
+```bash
+$ sqlcmd -U sa -i dev.sql
+```
+
+Note that this assumes your database server is located at `localhost:1433`, which is the case when using our Dockerized setup. If you're doing something non-standard, inserting the correct credentials and address is up to you.
+
 ## Request Flow
 
 Broadly speaking, this is how the new backend works:
@@ -78,6 +100,25 @@ Logging in/out, account management, etc. is presently handled in the current bac
 Low-level details of implementing authentication are handled by [Passport](http://www.passportjs.org), which lets us pick from hundreds of additional authentication strategies to add if desired.
 
 If authentication is optional for an action, then simply check for the presence of `this.req.authenticated` or `this.req.user` in your actions. Note that `this.req.authenticated` may go away at some point in favor of just checking truthiness of `this.req.user`.
+
+Note that, because the process of obtaining an authentication token is currently performed in the current backend, the process to access authenticated endpoints in local instances is a bit clunky. The best way I've found to do this is as follows:
+
+1. Log into https://dev.loconomics.com.
+2. Take a database backup and load it into your local instance as documented above.
+3. Find your user ID. There are a few ways to do this, but the easiest is probably via your registered email address:
+```sql
+select UserId from UserProfile where Email = '<your email address>';
+go
+```
+
+With your user ID in hand, you can then list your authorization tokens:
+
+```sql
+select Token from Authorizations where UserId = <your user ID>;
+go
+```
+
+Place one of these tokens in the header as so: `Authorization: Bearer <token>`
 
 ### Authorization
 
