@@ -6,6 +6,20 @@ All of these technologies are heavily documented. My goal here is to get folks u
 
 Note that, throughout this document, the phrase _current backend_ refers to the .net code found [here](https://github.com/loconomics/loconomics/tree/master/web). _This_ repository is referred to as the _new backend_.
 
+## Installing the Environment
+
+FOr the moment, [Docker](https://www.docker.com) is the only supported development environment. Nothing about the backend is Docker-specific, so avoiding Docker is entirely possible but beyond the scope of this documentation. To set up a development environment:
+
+1. [Set up the Loconomics frontend](https://github.com/loconomics/loconomics/blob/master/docs/App%20Quick%20Start%20Guide.md).
+2. [Install Docker CE for your platform](https://docs.docker.com/install/).
+3. [Install Docker Compose for your platform](https://docs.docker.com/compose/install/). Note that this may have been done in the previous step, so you may wish to run `docker-compose -v` at a terminal prompt before reinstalling it.
+4. Launch the frontend (for example, with `yarn grunt atwork`).
+5. From the backend directory, run `docker-compose up`. On first use, this will download necessary dependencies and create your development environment. Please be patient. At first launch, the backend may fail to connect to the database. That's fine. Follow the steps below for dumping/loading data, then kill and restart docker-compose. With data loaded, the second run should complete.
+6. Visit http://localhost:8811 and, from a browser console, run `localStorage.siteUrl = 'http://localhost:1337'`.
+7. You may need to reload the page.
+
+The backend development environment is now running. Note that, in its current form, the backend requires that dev.loconomics.com be operational during development.
+
 ## Getting Data
 
 While we have scripts to create a database from scratch, we don't yet have a mechanism to seed a new database. As such, the best way to get up and running is to get a database snapshot from dev.loconomics.com. You'll either need the username and password for the development database, or an SQL dump from someone who has these credentials.
