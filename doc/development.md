@@ -86,6 +86,27 @@ Also, please keep routes in alphabetical order to make it easier to determine if
 
 If we find ourselves using functionality in 3 or more places, we should move it to a [helper](https://sailsjs.com/documentation/concepts/helpers). Helpers also use the node-machine format, and are globally accessible via `sails.helpers.helperName`.
 
+## Querying the Database
+
+Broadly speaking, TypeORM has two ways of accessing the underlying database:
+
+ * A simplified API via [Find Options](https://github.com/typeorm/typeorm/blob/master/docs/find-options.md).
+ * A more complex API provided by [Select Query Builder](https://github.com/typeorm/typeorm/blob/master/docs/select-query-builder.md) and others.
+
+In general, Find Options support a simpler query syntax, and I use them where possible. However, Find Options don't support queries beyond a certain level of complexity. If you have bracketted `WHERE` statements for instance (I.e. `WHERE (something = 0 OR something IS NULL)`), Find Options won't work and you'll need a Query Builder.
+
+While Query Builders do resemble SQL, they have some advantages to placing raw SQL in your code:
+
+ * They discourage introducing SQL injections, as they make it a bit easier to place query parameters near the portions of the query that use them.
+ * Queries can be selectively built based on the presence or absence of action parameters.
+ * It's easier to reason about queries that are mostly TypeScript and slightly SQL, than it is to context-switch to multi-line strings of what is essentially code in another programming language.
+
+See [api/controllers/specializations.ts](../api/controllers.specializations.ts) for an example of code that:
+
+ * Builds a query programatically.
+ * Only includes clauses it needs. No need for clauses like `WHERE @0 = 0 OR @0 = SolutionID` just to handle a parameter that isn't present.
+ * Uses complex bracketted logic in a way that's easy to reason about and maintain.
+
 ## Common patterns with examples
 
 ### Listing all records
