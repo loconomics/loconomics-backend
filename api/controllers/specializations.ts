@@ -1,3 +1,7 @@
+import {Specialization, getRepository} from "@loconomics/data"
+import {serialize} from "class-transformer"
+import {Brackets} from "typeorm"
+
 declare var sails: any;
 
 module.exports = {
@@ -5,12 +9,10 @@ module.exports = {
   // description: '',
   inputs: {
     searchTerm: {
-      type: 'string',
-      required: true
+      type: 'string'
     },
     solutionID: {
-      type: 'number',
-      required: true
+      type: 'number'
     }
   },
   exits: {
@@ -23,19 +25,24 @@ module.exports = {
   },
   fn: async function(inputs, exits) {
     const {searchTerm, solutionID} = inputs
-    const sql = await sails.helpers.mssql()
-    const data = await sql.query(`
-      select top 20
-        specializationID,
-        name
-      from specialization
-      where (Approved = 1 OR Approved is null)
-        and languageID = ${this.req.languageID}
-        and countryID = ${this.req.countryID}
-        and name like '%${searchTerm}%'
-        and (${solutionID} = 0 or ${solutionID} = solutionID)
-      order by DisplayRank, name
-    `)
-    return exits.success(data.recordset)
+    const Specializations = await getRepository(Specialization)
+    const query = Specializations.createQueryBuilder()
+      .where("Specialization.language = :language", {language: this.req.getLocale()})
+      .andWhere(new Brackets((qb) => {
+        qb.where("Specialization.Approved = 1")
+          .orWhere("Specialization.Approved is null")
+      }))
+      .orderBy("Specialization.DisplayRank")
+      .addOrderBy("Specialization.Name")
+      .limit(20)
+    if(solutionID)
+      query.andWhere(new Brackets((qb) => {
+        qb.where("specialization.solutionID = :solutionID", {solutionID})
+          .orWhere("specialization.solutionID = 0")
+      }))
+    if(searchTerm)
+      query.andWhere("Specialization.Name like :searchTerm", {searchTerm: `%${searchTerm}%`})
+    const data = await query.getMany()
+    return exits.success(serialize(data))
   }
 }
