@@ -44,6 +44,16 @@ Sails includes an ORM, and while you'll see it referenced throughout its documen
 
 While @loconomics/data is developed as a separate package, it is linked into the new backend via Git submodules at [data/](../data/). It may eventually make sense to eliminiate this distinction at some point, but for now is done this way to give each distinct repository a well-defined scope. Eventually @loconomics/data and its migrations should be the single source of truth on the schema, but for now that work remains unfinished.
 
+## Accessing the Debugging Console
+
+Sails exposes a [console](https://sailsjs.com/documentation/reference/command-line-interface/sails-console) for accessing models, configurations, APIs, and more. Use the following command to run the console once the development environment is up:
+
+```bash
+$ docker-compose exec web sails console --dontLift
+```
+
+See [this documentation](https://sailsjs.com/documentation/reference/command-line-interface/sails-console) for instructions on interacting with the console.
+
 ## Writing the code
 
 Start by implementing the endpoint logic. In the new backend, make a file at _api/controllers/my-new-endpoint.ts_. This file is your [Sails action](https://sailsjs.com/documentation/concepts/actions-and-controllers) and uses a format called [node-machine](http://node-machine.org/). We'll dive into some common action patterns below.

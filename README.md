@@ -29,20 +29,11 @@ FOr the moment, [Docker](https://www.docker.com) is the only supported developme
 3. [Install Docker Compose for your platform](https://docs.docker.com/compose/install/).
 4. Launch the frontend (for example, with `yarn grunt atwork`).
 5. From the backend directory, run `docker-compose up`. On first use, this will download necessary dependencies and create your development environment. Please be patient. The backend will eventually report that it is listening.
-6. Visit http://localhost:8811 and, from a browser console, run `localStorage.siteUrl = 'http://localhost:1337'`.
-7. You may need to reload the page.
+6. If you get database connection errors, you may need to load in a database snapshot. See our [developer documentation](doc/development.md) for details on this process.
+7. Visit http://localhost:8811 and, from a browser console, run `localStorage.siteUrl = 'http://localhost:1337'`.
+8. You may need to reload the page.
 
 The backend development environment is now running. Note that, in its current form, the backend requires that dev.loconomics.com be operational during development.
-
-### Accessing the Debugging Console
-
-Sails exposes a [console](https://sailsjs.com/documentation/reference/command-line-interface/sails-console) for accessing models, configurations, APIs, and more. Use the following command to run the console once the development environment is up:
-
-```bash
-$ docker-compose exec web sails console --dontLift
-```
-
-See [this documentation](https://sailsjs.com/documentation/reference/command-line-interface/sails-console) for instructions on interacting with the console.
 
 ### Production
 
@@ -51,7 +42,6 @@ See [this documentation](https://sailsjs.com/documentation/reference/command-lin
 But, as a start at collecting notes, here we go. The following environment variables are currently used:
 
  * `LOCONOMICS_BACKEND_URL`: While we're proxying, set to the URL of the .net Loconomics backend. Defaults to `https://www.loconomics.com`.
- * `MSSQLSERVER_HOST`: The hostname of the MSSQL Server.
- * `MSSQLSERVER_USER`: The user who owns the database.
- * `MSSQLSERVER_PASSWORD`: The above user's password.
- * `MSSQLSERVER_DATABASE`: The Loconomics MSSQL Server database.
+ * `MSSQLSERVER_URL`: The URL to the MSSQL server in the form mssql://<user>:<password>@<host>/<database>
+
+At the moment, Azure is the only environment known to run this. See [here](https://github.com/loconomics/loconomics-devops) for a Terraform script that can be used to set things up.
