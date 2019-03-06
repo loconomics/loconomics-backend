@@ -207,6 +207,10 @@ should be:
 
 The error message misleads. It actually refers to the fields in the `select`, not to `select` itself. This can presumably happen with other TypeORM fields as well.
 
+### Invalid usage of the option NEXT in the FETCH statement.
+
+You'll hit this error if you're using TypeORM's `take` or `limit` options without an `ORDER BY` statement somewhere in your query. If there *is* an `ORDER BY`, ensure that it is correctly being translated to the query by examining the server logs for the web container.
+
 ## Testing
 
 There isn't a system for API tests, but since I needed some way to quickly run and test requests against local and remote instances, I created [this pile of shell scripts](../test/rest). [HTTPIe](https://httpie.org) is required to run these. Each script is named for a given route, and runs against https://dev.loconomics.com by default. To run a script against your local instance, use something like:
