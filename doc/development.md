@@ -161,7 +161,7 @@ If authentication is optional for an action, then simply check for the presence 
 
 Note that, because the process of obtaining an authentication token is currently performed in the current backend, the process to access authenticated endpoints in local instances is a bit clunky. The best way I've found to do this is as follows:
 
-1. Log into https://dev.loconomics.com.
+1. Log into https://dev.loconomics.com. Alternatively, run the [test/rest/auth/login.sh](../test/rest/auth/login.sh) script and copy the token from the output.
 2. Take a database backup and load it into your local instance as documented above.
 3. Find your user ID. There are a few ways to do this, but the easiest is probably via your registered email address:
 ```sql
