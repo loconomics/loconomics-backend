@@ -39,7 +39,6 @@ export const auth = (req, res, next) => {
       if(req.user.isOrganization)
         req.roles.push("organization")
     }
-    req.authenticated = !!user
     next()
   })(req, res, next);
 }

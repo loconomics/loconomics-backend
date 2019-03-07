@@ -151,13 +151,13 @@ Again, if we don't need the same parsing logic multiple times, let's keep it in 
 
 ### Authentication
 
-Logging in/out, account management, etc. is presently handled in the current backend, but the new backend needs access to this status. As such, the current backend provisions a UUID token to authenticated users, which the frontend treats as a bearer token. The new backend looks up the user by token and populates `this.req.user` and `this.req.authenticated`.
+Logging in/out, account management, etc. is presently handled in the current backend, but the new backend needs access to this status. As such, the current backend provisions a UUID token to authenticated users, which the frontend treats as a bearer token. The new backend looks up the user by token and populates `this.req.user`.
 
 [api/controllers/test/authentication.ts](../api/controllers/test/authentication.ts) demonstrates accessing the authenticated user from within an action. Actions where authentication is required are indicated by adding a [policy](https://sailsjs.com/documentation/concepts/policies) entry in [config/policies.js](../config/policies.js) to the [auth policy](../api/policies/auth.ts) which handles both authentication and authorization.
 
 Low-level details of implementing authentication are handled by [Passport](http://www.passportjs.org), which lets us pick from hundreds of additional authentication strategies to add if desired.
 
-If authentication is optional for an action, then simply check for the presence of `this.req.authenticated` or `this.req.user` in your actions. Note that `this.req.authenticated` may go away at some point in favor of just checking truthiness of `this.req.user`.
+If authentication is optional for an action, then simply check for the presence of `this.req.user` in your actions.
 
 Note that, because the process of obtaining an authentication token is currently performed in the current backend, the process to access authenticated endpoints in local instances is a bit clunky. The best way I've found to do this is as follows:
 
