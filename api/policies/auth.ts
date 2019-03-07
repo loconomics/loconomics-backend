@@ -3,12 +3,17 @@ declare var sails: any;
 export = (req, res, next) => {
   let action = sails.getActions()[req.options.action]
   let metadata = action.toJSON()
-  let requiredRoles = metadata.requiredRoles || []
-  if(req.authenticated)
-    return next()
+  let requiredLevel = metadata.requiredLevel
+  if(req.user) {
+    if(requiredLevel) {
+      if(req.roles.includes(requiredLevel))
+        return next()
+    } else
+      return next()
+  }
   const base = `/${req.getLocale()}/rest/`
   return res.unauthorized({
-    requiredLevel: requiredRoles,
+    requiredLevel: requiredLevel,
     login: `${base}login`,
     signup: `${base}signup`
   })

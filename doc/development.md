@@ -180,7 +180,7 @@ Place one of these tokens in the header as so: `Authorization: Bearer <token>`
 
 ### Authorization
 
-To require specific roles for a given action, set its `requiredRoles` field. See xxx for an example of this.
+To require a specific role or level for a given action, set its `requiredLevel` field to the string name of the level. Note that I didn't have time to test this functionality, so it should be considered a stub for now.
 
 ## Gotchas
 
