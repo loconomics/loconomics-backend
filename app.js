@@ -20,7 +20,7 @@
  *   https://sailsjs.com/anatomy/app.js
  */
 
-require("reflect-metadata")
+require('reflect-metadata');
 require('ts-node/register');
 require('tsconfig-paths/register');
 

@@ -9,14 +9,14 @@
  * https://sailsjs.com/config/http
  */
 
-const MetricsMiddleware = require('http-metrics-middleware')
+const MetricsMiddleware = require('http-metrics-middleware');
 
-const {auth, initialize} = require('../api/middleware/auth')
-const i18n = require('../api/middleware/i18n')
-const backend = require('../api/middleware/proxy').backend
-const pages = require('../api/middleware/proxy').pages
+const {auth, initialize} = require('../api/middleware/auth');
+const i18n = require('../api/middleware/i18n');
+const backend = require('../api/middleware/proxy').backend;
+const pages = require('../api/middleware/proxy').pages;
 
-const metrics = (new MetricsMiddleware()).initRoutes()
+const metrics = (new MetricsMiddleware()).initRoutes();
 
 module.exports.http = {
 
